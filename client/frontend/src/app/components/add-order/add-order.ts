@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Item } from '../../shared/models/item';
 import { OrderRow } from '../../shared/models/order-row';
+import { CustomerService } from '../../shared/services/customer.service';
 import { HttpService } from '../../shared/services/http.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { HttpService } from '../../shared/services/http.service';
 })
 export class AddOrder {
   public items: Item[] | undefined;
-  constructor(httpService: HttpService){
+  constructor(private httpService: HttpService, private customerService: CustomerService){
     httpService.getItems().subscribe((data) => {
       this.items = data;
     });
