@@ -8,5 +8,7 @@ namespace RolDbContext
     {
         public RolEfContext(DbContextOptions<RolEfContext> options) : base(options) { }
         DbSet<Info> Info { get; set; }
+        DbSet<Order> Order { get; set; }
+        DbSet<OrderRow> OrderRow { get; set; }
     }
 }
