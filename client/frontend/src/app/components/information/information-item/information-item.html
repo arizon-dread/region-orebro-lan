@@ -1,1 +1,11 @@
-<p>information-item works!</p>
+<div class="card mb-2">
+    <div class="card-header">
+        <h3 class="pt-2">{{infoItem()?.title}}</h3>
+    </div>
+    <div class="card-body">
+        {{infoItem()?.text}}
+    </div>
+    <div class="card-footer text-sm">
+        publicerad: {{infoItem()?.publishDate | date:'short'}}
+    </div>
+</div>

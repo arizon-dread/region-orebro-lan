@@ -3,10 +3,11 @@ import { HttpService } from '../../shared/services/http.service';
 import { take } from 'rxjs';
 import { Info } from '../../shared/models/info';
 import { HttpErrorResponse } from '@angular/common/http';
+import { InformationItem } from "./information-item/information-item";
 
 @Component({
   selector: 'app-information',
-  imports: [],
+  imports: [InformationItem],
   templateUrl: './information.html',
   styleUrl: './information.css',
 })
