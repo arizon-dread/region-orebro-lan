@@ -16,7 +16,7 @@ namespace clientside.backend.Controllers
         {
             return _infoService.Active();
         }
-        [HttpGet("/all")]
+        [HttpGet("all")]
         public IEnumerable<Info> GetAll()
         {
             return _infoService.All();

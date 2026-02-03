@@ -11,6 +11,9 @@
       "projectType": "application",
       "schematics": {},
       "root": "",
+      "i18n": {
+        "sourceLocale": "sv"
+      },
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {

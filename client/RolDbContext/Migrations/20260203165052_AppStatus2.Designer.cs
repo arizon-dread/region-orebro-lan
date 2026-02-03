@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RolDbContext;
 
@@ -10,9 +11,11 @@ using RolDbContext;
 namespace RolDbContext.Migrations
 {
     [DbContext(typeof(RolEfContext))]
-    partial class RolEfContextModelSnapshot : ModelSnapshot
+    [Migration("20260203165052_AppStatus2")]
+    partial class AppStatus2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.2");
@@ -54,10 +57,6 @@ namespace RolDbContext.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("DeliveryPostalCode")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -242,23 +241,7 @@ namespace RolDbContext.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
-
                     b.ToTable("OrderRow");
-                });
-
-            modelBuilder.Entity("RolDbContext.Models.OrderRow", b =>
-                {
-                    b.HasOne("RolDbContext.Models.Order", null)
-                        .WithMany("OrderRows")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("RolDbContext.Models.Order", b =>
-                {
-                    b.Navigation("OrderRows");
                 });
 #pragma warning restore 612, 618
         }

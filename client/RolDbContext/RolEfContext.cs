@@ -13,5 +13,6 @@ namespace RolDbContext
         public DbSet<Customer> Customer { get; set; }
         public DbSet<ItemInventory> ItemInventory { get; set; }
         public DbSet<Item> Item {  get; set; }
+        public DbSet<ApplicationStatus> ApplicationStatus { get; set;  }
     }
 }
