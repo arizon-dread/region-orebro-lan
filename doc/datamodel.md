@@ -23,11 +23,20 @@ Info
     PublishDate (DateTime)
     Unpublished (DataTime?)
 ```
-## Beställningar  
-```
+## Beställningar
+...
 Order
     Id (Guid)
+    OrderDate (DateTime)
+    DeliveryAddress (string)
+    DeliveryCity (string)
+    DeliveryPostalCode (string)
+    Customer (string)    
+...
+```
+OrderRow
+    Id (Guid)
+    OrderId (Guid)
     ItemId (Guid)
     Ammount (int)
-    Customer (string)
 ```
