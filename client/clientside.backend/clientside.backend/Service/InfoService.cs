@@ -1,4 +1,5 @@
-﻿using clientside.backend.DIHelper;
+﻿using clientside.backend.Classes;
+using clientside.backend.DIHelper;
 using RolDbContext;
 using RolDbContext.Models;
 
@@ -12,10 +13,10 @@ namespace clientside.backend.Service
         {
             _context = context;
         }
-        public void Save(viewmodels.Info info)
+        public ServiceResponse<Info> Save(viewmodels.Info info)
         {
-
             var oldItem = _context.Info.FirstOrDefault(d => d.Id == info.Id);
+            Info? item = null;
             if (oldItem != null)
             {
                 if(oldItem.Version > info.Version)
@@ -26,11 +27,12 @@ namespace clientside.backend.Service
                 oldItem.Text = info.Text;
                 oldItem.Title = info.Title;
                 oldItem.Version = info.Version;
+                item = oldItem;
 
             }
             else
             {
-                var item = new Info
+                item = new Info
                 {
                    
                     Id = info.Id ?? Guid.NewGuid(),
@@ -43,6 +45,7 @@ namespace clientside.backend.Service
                 _context.Info.Add(item);
             }
             _context.SaveChanges();
+            return new ServiceResponse<Info>("", Enums.ServiceResponseEnum.Success, item);
         }
     }
 }
