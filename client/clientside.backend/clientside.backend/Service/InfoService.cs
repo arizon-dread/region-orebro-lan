@@ -61,7 +61,7 @@ namespace clientside.backend.Service
                 oldItem.Unpublished = info.Unpublished;
                 oldItem.Text = info.Text;
                 oldItem.Title = info.Title;
-                oldItem.Version = info.Version;
+                oldItem.Version = info.Version+1;
 
             }
             else
