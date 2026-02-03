@@ -6,17 +6,22 @@ namespace clientside.backend.Controllers
 {
     public class InfoController : BaseController
     {
-        private readonly InfoService _itemService;
+        private readonly InfoService _infoService;
         public InfoController(InfoService itemService) 
         { 
-            _itemService = itemService;
+            _infoService = itemService;
         }
         [HttpGet]
-        public IEnumerable<Info> Get()
+        public IEnumerable<Info> GetActive()
         {
-            return _itemService.Active();
+            return _infoService.Active();
         }
-        
+        [HttpGet("/all")]
+        public IEnumerable<Info> GetAll()
+        {
+            return _infoService.All();
+        }
+
         [HttpPost]
         public IActionResult SaveInfo(viewmodels.Info info)
         {
@@ -24,7 +29,7 @@ namespace clientside.backend.Controllers
             {
                 return BadRequest();
             }
-            var response = _itemService.Save(info);
+            var response = _infoService.Save(info);
             return HandleResponseWrapperAndReturnResponseData(response);
         }
 
