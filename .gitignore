@@ -9,3 +9,5 @@
 .vs/
 .vscode/
 **/.idea/
+**/inventory.yml
+**/ssh-key
