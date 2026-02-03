@@ -62,23 +62,26 @@ namespace clientside.backend.Service
                 }
                 info.MapTo(oldItem);
                 oldItem.UpdatedDate = DateTime.UtcNow;
-                if(_serviceSettings.Mode == "Server")
+                if(_serviceSettings.IsServer)
                 {
                     oldItem.Status = Status.SavedRemote;
+                    oldItem.Version = info.Version + 1;
                 }
             }
             else
             {
                 var item = info.Map()!;
 
-                if (_serviceSettings.Mode == "Server")
+                if (_serviceSettings.IsServer)
                 {
                     item.Status = Status.SavedRemote;
+                    item.Version = info.Version + 1;
                 }
                 item.CreatedDate = DateTime.UtcNow;
                 item.UpdatedDate = DateTime.UtcNow;
                 _context.Info.Add(item);
-                info.Id = item.Id;
+                info = item.Map()!;
+                
             }
             _context.SaveChanges();
             return new ServiceResponse<viewmodels.Info>("", Enums.ServiceResponseEnum.Success, info);
