@@ -5,12 +5,12 @@ import { Info } from '../../shared/models/info';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
-  selector: 'app-organization-list',
+  selector: 'app-information',
   imports: [],
-  templateUrl: './organization-list.html',
-  styleUrl: './organization-list.css',
+  templateUrl: './information.html',
+  styleUrl: './information.css',
 })
-export class OrganizationList implements OnInit {
+export class Information implements OnInit {
 
   informationList: WritableSignal<Info[] | undefined> = signal(undefined);
   constructor(private httpSvc: HttpService) {
