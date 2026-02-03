@@ -9,3 +9,6 @@
 .vs/
 .vscode/
 **/.idea/
+/client/clientside.backend/clientside.backend/orderdatabase.db
+/client/clientside.backend/clientside.backend/orderdatabase.db-shm
+/client/clientside.backend/clientside.backend/orderdatabase.db-wal

@@ -2,7 +2,8 @@ using clientside.backend.DIHelper;
 using Microsoft.EntityFrameworkCore;
 using RolDbContext;
 var builder = WebApplication.CreateBuilder(args);
-
+var dbhelper = new DbHelper();
+dbhelper.Init(builder.Configuration.GetConnectionString("Sqlite"));
 // Add services to the container.
 builder.Services.AddDbContext<RolDbContext.RolEfContext>(d =>
 {
