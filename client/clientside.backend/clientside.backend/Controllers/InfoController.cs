@@ -4,9 +4,7 @@ using viewmodels;
 
 namespace clientside.backend.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class InfoController : ControllerBase
+    public class InfoController : BaseController
     {
         private readonly InfoService _itemService;
         public InfoController(InfoService itemService) 
@@ -20,14 +18,14 @@ namespace clientside.backend.Controllers
         }
         
         [HttpPost]
-        public ActionResult SaveInfo(Info info)
+        public IActionResult SaveInfo(viewmodels.Info info)
         {
             if (info == null)
             {
                 return BadRequest();
             }
-            _itemService.Save(info);
-            return Ok();
+            var response = _itemService.Save(info);
+            return HandleResponseWrapperAndReturnResponseData(response);
         }
 
     }

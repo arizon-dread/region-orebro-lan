@@ -1,4 +1,5 @@
-﻿using clientside.backend.DIHelper;
+﻿using clientside.backend.Classes;
+using clientside.backend.DIHelper;
 using RolDbContext;
 using RolDbContext.Models;
 using viewmodels;
@@ -48,9 +49,8 @@ namespace clientside.backend.Service
             }
         }
 
-        public void Save(viewmodels.Info info)
+        public ServiceResponse<viewmodels.Info> Save(viewmodels.Info info)
         {
-
             var oldItem = _context.Info.FirstOrDefault(d => d.Id == info.Id);
             if (oldItem != null)
             {
@@ -61,7 +61,7 @@ namespace clientside.backend.Service
                 oldItem.Unpublished = info.Unpublished;
                 oldItem.Text = info.Text;
                 oldItem.Title = info.Title;
-                oldItem.Version = info.Version+1;
+                oldItem.Version = info.Version;
 
             }
             else
@@ -77,8 +77,10 @@ namespace clientside.backend.Service
                     Version = info.Version < 1 ? 1 : info.Version,
                 };
                 _context.Info.Add(item);
+                info.Id = item.Id;
             }
             _context.SaveChanges();
+            return new ServiceResponse<viewmodels.Info>("", Enums.ServiceResponseEnum.Success, info);
         }
     }
 }
