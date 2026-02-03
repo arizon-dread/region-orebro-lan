@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, EventEmitter, input, output } from '@angular/core';
 import { Info } from '../../../shared/models/info';
 import { DatePipe } from '@angular/common';
 
@@ -10,4 +10,12 @@ import { DatePipe } from '@angular/common';
 })
 export class InformationItem {
   readonly infoItem = input<Info | undefined>();
+  unpublishItem = output<Info>();
+  editItem = output<Info>();
+  unpublish() {
+    this.unpublishItem.emit(this.infoItem()!);
+  }
+  edit() {
+    this.editItem.emit(this.infoItem()!);
+  }
 }
