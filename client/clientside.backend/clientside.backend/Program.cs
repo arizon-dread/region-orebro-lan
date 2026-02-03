@@ -10,7 +10,14 @@ builder.Services.AddDbContext<RolDbContext.RolEfContext>(d =>
     var connection = builder.Configuration.GetConnectionString("Sqlite");
     d.UseSqlite(connection);
 });
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "cors",
+                      policy =>
+                      {
+                          policy.WithOrigins(["http://localhost:4200", "https://localhost:7089"]).WithMethods([HttpMethods.Get, HttpMethods.Post]);
+                      });
+});
 builder.Services.AddControllers();
 builder.Services.AddServices();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -30,7 +37,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("cors");
 app.UseAuthorization();
 
 app.MapControllers();

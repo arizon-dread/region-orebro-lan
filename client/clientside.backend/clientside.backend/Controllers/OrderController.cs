@@ -12,11 +12,17 @@ namespace clientside.backend.Controllers
         public OrderController(OrderService orderService) {
             _service = orderService;
         }
-        [HttpGet]
+        [HttpGet("/get")]
         public IActionResult Get()
         {
 
             return Ok();
+        }
+
+        [HttpGet("/ready")]
+        public IActionResult Ready()
+        {
+            return new JsonResult("Ready");
         }
     }
 }
