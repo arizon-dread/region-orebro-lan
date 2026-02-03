@@ -19,7 +19,7 @@ export class HttpService {
   }
 
   getItems(): Observable<Item[]> {
-    return this.http.get<Item[]>(this.apiPath + '/api/v1/items');
+    return this.http.get<Item[]>(this.apiPath + '/api/v1/item/all');
   }
 
   getOrders(): Observable<Order[]> {
