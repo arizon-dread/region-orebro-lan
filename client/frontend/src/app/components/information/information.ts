@@ -46,24 +46,24 @@ export class Information implements OnInit {
       next: (data: Info) => {
         this.getInfo();
         //fine and dandy, toastr
-      }, 
+      },
       error: (err: HttpErrorResponse) => {
         console.error(JSON.stringify(err));
         //här borde vi göra nåt att vi fick conflict från servern för att den redan var ändrad. 
       }
     });
   }
-  async popupModal(title?: string, text?: string) {
+  async edit(infoItem: Info) {
+    await this.popupModal(infoItem);
+  }
+  async popupModal(infoItem?: Info) {
     await new Promise<Info>((resolve, reject) => {
       this.infoDialogRef = this.infoDialog.open(AddInformation, {
         height: 'fit-content',
         width: 'fit-content',
         backdropClass: 'cdk-overlay-dark-backdrop',
         hasBackdrop: true,
-        data: {
-          title: title,
-          text: text,
-        },
+        data: infoItem,
         panelClass: 'custom-popup'
       });
       this.backdropClickSub = this.infoDialogRef.backdropClick().subscribe(() => {
@@ -81,12 +81,12 @@ export class Information implements OnInit {
     ).then((data) => {
       if (data) {
         this.update(data);
-        if (this.afterClosedSub) {
-          this.afterClosedSub.unsubscribe();
-        }
-        if (this.backdropClickSub) {
-          this.backdropClickSub.unsubscribe();
-        }
+      }
+      if (this.afterClosedSub) {
+        this.afterClosedSub.unsubscribe();
+      }
+      if (this.backdropClickSub) {
+        this.backdropClickSub.unsubscribe();
       }
     });
   }

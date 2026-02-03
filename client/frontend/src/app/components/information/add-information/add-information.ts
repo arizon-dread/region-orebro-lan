@@ -1,4 +1,4 @@
-import { Component, Inject, Injectable } from '@angular/core';
+import { Component, Inject, Injectable, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpService } from '../../../shared/services/http.service';
 import { Info } from '../../../shared/models/info';
@@ -12,14 +12,22 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './add-information.html',
   styleUrl: './add-information.css',
 })
-export class AddInformation {
+export class AddInformation implements OnInit {
 
   form: FormGroup = new FormGroup({
     title: new FormControl<string>("", Validators.required),
     text: new FormControl<string>("", Validators.required),
   });
 
-  constructor(private httpSvc: HttpService, @Inject(MAT_DIALOG_DATA) private data: {title: string, text: string}) { }
+
+  constructor(private httpSvc: HttpService, @Inject(MAT_DIALOG_DATA) private data: Info) { }
+  ngOnInit() {
+    this.form.patchValue({
+      title: this.data.title,
+      text: this.data.text,
+    });
+    this.form.updateValueAndValidity();
+  }
   reset() {
     this.form.reset();
     this.form.markAsUntouched();
@@ -29,10 +37,10 @@ export class AddInformation {
     //validate form
     if (this.form.valid) {
       let info: Info = {
-        id: crypto.randomUUID(),
+        id: this.data.id,
         title: this.form.controls.title.value,
         text: this.form.controls.text.value,
-        publishDate: new Date(),
+        version: this.data.version,
       }
       return info;
       
