@@ -1,39 +1,28 @@
-﻿
-using clientside.backend.Settings;
-using System.Diagnostics;
+﻿using clientside.backend.DIHelper;
+using RolDbContext;
 
 namespace clientside.backend.Service
 {
-    public class SyncService( IServiceProvider serviceProvider) : IHostedService
+    [Lifetime(Lifetime.Scoped)]
+    public class SyncService(RolEfContext context)
     {
-        private Timer? _timer;
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task<bool> Synchronize()
         {
-            _timer = new Timer(async _ => await OnTimerFiredAsync(cancellationToken),
-            null, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(1));
-            return Task.CompletedTask;
-        }
-
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            _timer.Dispose();
-            
-            return Task.CompletedTask;
-        }
-        private async Task OnTimerFiredAsync(CancellationToken cancellationToken)
-        {
+            var serverAddress = context.ApplicationStatus.FirstOrDefault(d => d.Key == "ServerAddress")?.Value;
+            var lastSync = context.ApplicationStatus.FirstOrDefault(d => d.Key == "LastSync");
+            if(!Uri.TryCreate(serverAddress, UriKind.Absolute, out var url)) return false;
+            if(!DateTime.TryParse(lastSync?.Value, out var date)) return false;
+            var client = new HttpClient {BaseAddress = url};
             try
             {
-                using var scope = serviceProvider.CreateScope();
-                var settingsService = scope.ServiceProvider.GetRequiredService<SettingsService>();
-                var settings = settingsService.GetByKey("LastSync");
-                // do your work here
-                Debug.WriteLine($"Syncing {DateTime.Now}. Last Sync {settings?.Value}");
+                var data = await client.GetFromJsonAsync<viewmodels.SyncViewModel>($"api/sync/changed/{date}");
+                return true;
+
             }
-            finally
+            catch (Exception ex)
             {
-                _timer?.Change(TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(1));
+                return false;
             }
         }
     }

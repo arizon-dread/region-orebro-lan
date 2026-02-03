@@ -5,8 +5,6 @@ using viewmodels;
 
 namespace clientside.backend.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class SettingsController(SettingsService settingsService) : BaseController
     {
         [HttpGet]
