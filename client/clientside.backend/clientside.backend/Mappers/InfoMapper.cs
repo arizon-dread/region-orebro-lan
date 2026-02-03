@@ -27,7 +27,7 @@
             dbinfo.Unpublished = vminfo.Unpublished;
             dbinfo.Status = vminfo.Status;
         }
-        public static void MapTo(this RolDbContext.Models.Info dbinfo, viewmodels.Info vminfo)
+        public static void MapTo(this viewmodels.Info vminfo, RolDbContext.Models.Info dbinfo)
         {
             dbinfo.Text = vminfo.Text;
             dbinfo.Title = vminfo.Title;
@@ -37,7 +37,7 @@
             dbinfo.Status = vminfo.Status;
         }
 
-        public static void MapTo(this  viewmodels.Info vminfo, RolDbContext.Models.Info dbinfo)
+        public static void MapTo(this RolDbContext.Models.Info dbinfo, viewmodels.Info vminfo)
         {
             vminfo.Id = dbinfo.Id;
             vminfo.Text = dbinfo.Text;
