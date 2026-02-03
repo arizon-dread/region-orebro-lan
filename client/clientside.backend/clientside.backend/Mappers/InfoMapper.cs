@@ -23,7 +23,7 @@
             dbinfo.Text = vminfo.Text;
             dbinfo.Title = vminfo.Title;
             dbinfo.Version = vminfo.Version;
-            dbinfo.PublishDate = vminfo.PublishDate ?? DateTime.Now ;
+            dbinfo.PublishDate = vminfo.PublishDate ?? DateTime.UtcNow ;
             dbinfo.Unpublished = vminfo.Unpublished;
             dbinfo.Status = vminfo.Status;
         }
@@ -32,7 +32,7 @@
             dbinfo.Text = vminfo.Text;
             dbinfo.Title = vminfo.Title;
             dbinfo.Version = vminfo.Version;
-            dbinfo.PublishDate = vminfo.PublishDate ?? DateTime.Now;
+            dbinfo.PublishDate = vminfo.PublishDate ?? DateTime.UtcNow;
             dbinfo.Unpublished = vminfo.Unpublished;
             dbinfo.Status = vminfo.Status;
         }
@@ -66,7 +66,7 @@
                 Id = info.Id ?? Guid.NewGuid(),
                 Text = info.Text,
                 Title = info.Title,
-                PublishDate = info.PublishDate ?? DateTime.Now,
+                PublishDate = info.PublishDate ?? DateTime.UtcNow,
                 Unpublished = info.Unpublished,
                 Version = info.Version < 1 ? 1 : info.Version
             };
