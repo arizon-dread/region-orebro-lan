@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="rol.client/rol.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="ROL.Server/ROL.Server.csproj" />
+</Solution>

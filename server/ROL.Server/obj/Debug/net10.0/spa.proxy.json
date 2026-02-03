@@ -1,0 +1,10 @@
+{
+"SpaProxyServer": {
+"ServerUrl": "https://localhost:49778",
+"RedirectUrl": "",
+"LaunchCommand": "npm start",
+"WorkingDirectory": "C:\\Users\\bjo051\\source\\repos\\region-orebro-lan\\server\\ROL.Server\\..\\rol.client",
+"MaxTimeoutInSeconds": "120",
+"KeepRunning": "false"
+}
+}
