@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class HttpService {
+  
   private apiPath: string = "http://localhost:5111";
   private http = inject(HttpClient);
 
@@ -17,5 +18,8 @@ export class HttpService {
   }
   getInformationList() : Observable<Info[]> {
     return this.http.get<Info[]>(this.apiPath + '/api/v1/info');
+  }
+  saveInformation(info: Info) {
+    return this.http.post<Info>(this.apiPath + '/api/v1/info', info);
   }
 }
