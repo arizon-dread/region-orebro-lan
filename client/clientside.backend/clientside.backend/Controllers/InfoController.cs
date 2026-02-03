@@ -1,7 +1,6 @@
 ﻿using clientside.backend.Service;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using viewmodels;
 
 namespace clientside.backend.Controllers
 {
@@ -14,14 +13,14 @@ namespace clientside.backend.Controllers
         { 
             _itemService = itemService;
         }
-        [HttpGet()]
-        public ActionResult Getq()
+        [HttpGet]
+        public IEnumerable<Info> Get()
         {
-            return Ok();
+            return _itemService.Active();
         }
         
         [HttpPost]
-        public ActionResult SaveInfo(viewmodels.Info info)
+        public ActionResult SaveInfo(Info info)
         {
             if (info == null)
             {

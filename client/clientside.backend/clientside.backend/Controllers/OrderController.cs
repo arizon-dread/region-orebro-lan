@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace clientside.backend.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class OrderController : ControllerBase
     {
         private readonly OrderService _service;
