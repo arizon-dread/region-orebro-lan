@@ -7,8 +7,7 @@ namespace RolDbContext
         public void Init(string connectionString)
         {
             var dbContextBuilder = new DbContextOptionsBuilder<RolEfContext>();
-            var connString = @"Data Source=orderdatabase.db";
-            dbContextBuilder.UseSqlite(connString);
+            dbContextBuilder.UseSqlite(connectionString);
 
             var context = new RolEfContext(dbContextBuilder.Options);
             try

@@ -4,7 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-	  <SpaRoot>..\..\frontend</SpaRoot>
+	  <SpaRoot>../../frontend</SpaRoot>
 	  <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
 	  <SpaProxyServerUrl>http://localhost:4200</SpaProxyServerUrl>
 
@@ -22,9 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\frontend\frontend.esproj" />
-    <ProjectReference Include="..\..\RolDbContext\RolDbContext.csproj" />
-    <ProjectReference Include="..\..\viewmodels\viewmodels.csproj" />
+    <ProjectReference Include="../../frontend\frontend.esproj" />
+    <ProjectReference Include="../../RolDbContext\RolDbContext.csproj" />
+    <ProjectReference Include="../../viewmodels\viewmodels.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RolDbContext;
 
@@ -10,9 +11,11 @@ using RolDbContext;
 namespace RolDbContext.Migrations
 {
     [DbContext(typeof(RolEfContext))]
-    partial class RolEfContextModelSnapshot : ModelSnapshot
+    [Migration("20260203140126_models")]
+    partial class models
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.2");
@@ -43,9 +46,6 @@ namespace RolDbContext.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Status")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Version")
@@ -86,9 +86,6 @@ namespace RolDbContext.Migrations
                     b.Property<DateTime?>("Unpublished")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("Version")
                         .HasColumnType("INTEGER");
 
@@ -124,9 +121,6 @@ namespace RolDbContext.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("Version")
                         .HasColumnType("INTEGER");
 
@@ -155,9 +149,6 @@ namespace RolDbContext.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Status")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Version")
@@ -199,9 +190,6 @@ namespace RolDbContext.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("Version")
                         .HasColumnType("INTEGER");
 
@@ -233,9 +221,6 @@ namespace RolDbContext.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Status")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Version")
