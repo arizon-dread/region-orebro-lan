@@ -1,18 +1,11 @@
 ﻿################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
+
+[Dd]ebug/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+.vs/
+.vscode/
 **/.idea/
-/.vs
-/client/.vs
-/server/ROL.Server.Api/.vs
-/client/rol.client.client/.vscode
-/client/ROL.Client.Server/obj
-/client/rol.client/.vscode
-/client/ROL.Server/obj
-/server/.vs
-/server/rol.serverside.client/.vscode
-/server/ROL.ServerSide.Server/obj
-/client/clientside.backend/.vs/clientside.backend.slnx
-/client/clientside.backend/clientside.backend/bin/Debug/net10.0
-/client/clientside.backend/clientside.backend/obj
-/client/clientside.backend/.vs/ProjectEvaluation
