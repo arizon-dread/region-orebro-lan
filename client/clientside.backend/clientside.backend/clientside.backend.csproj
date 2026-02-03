@@ -7,7 +7,8 @@
 	  <SpaRoot>../../frontend</SpaRoot>
 	  <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
 	  <SpaProxyServerUrl>http://localhost:4200</SpaProxyServerUrl>
-
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <RestoreLockedMode Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</RestoreLockedMode>
   </PropertyGroup>
 
   <ItemGroup>
