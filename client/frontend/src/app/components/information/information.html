@@ -1,0 +1,10 @@
+<section>
+    <h2>Organisationsinformation</h2>
+    <div class="row">
+        @for(infoItem of informationList() ; track infoItem.id) {
+        <div class="col-md-6 col-xs-12">
+           <app-information-item [infoItem]="infoItem"></app-information-item> 
+        </div>
+        }
+    </div>
+</section>

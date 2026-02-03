@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OrganizationList } from './organization-list';
+import { OrganizationList } from './information';
 
 describe('OrganizationList', () => {
   let component: OrganizationList;
