@@ -5,3 +5,5 @@
 /.vs
 /client/.vs
 /server/ROL.Server.Api/.vs
+/client/rol.client.client/.vscode
+/client/ROL.Client.Server/obj
