@@ -8,9 +8,9 @@ namespace clientside.backend.Controllers
     [Route("[controller]")]
     public class OrderController : ControllerBase
     {
-        private readonly OrderService _orderService;
+        private readonly InfoService _orderService;
 
-        public OrderController(OrderService orderService) {
+        public OrderController(InfoService orderService) {
             _orderService = orderService;
         }
         [HttpGet]
