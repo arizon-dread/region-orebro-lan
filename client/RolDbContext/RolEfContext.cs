@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using RolDbContext.Models;
 
 namespace RolDbContext
 {
@@ -7,5 +8,11 @@ namespace RolDbContext
     {
         public RolEfContext(DbContextOptions<RolEfContext> options) : base(options) { }
         DbSet<Info> Info { get; set; }
+        DbSet<Order> Order { get; set; }
+        DbSet<OrderRow> OrderRow { get; set; }
+        DbSet<Customer> Customer { get; set; }
+        DbSet<ItemInventory> ItemInventory { get; set; }
+        DbSet<Item> Item { get; set; }
+
     }
 }
