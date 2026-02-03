@@ -7,3 +7,5 @@
 /server/ROL.Server.Api/.vs
 /client/rol.client.client/.vscode
 /client/ROL.Client.Server/obj
+/client/rol.client/.vscode
+/client/ROL.Server/obj
