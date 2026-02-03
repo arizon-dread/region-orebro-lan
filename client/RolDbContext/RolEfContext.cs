@@ -7,8 +7,11 @@ namespace RolDbContext
     public class RolEfContext : DbContext
     {
         public RolEfContext(DbContextOptions<RolEfContext> options) : base(options) { }
-        DbSet<Info> Info { get; set; }
-        DbSet<Order> Order { get; set; }
-        DbSet<OrderRow> OrderRow { get; set; }
+        public DbSet<Info> Info { get; set; }
+        public DbSet<Order> Order { get; set; }
+        public DbSet<OrderRow> OrderRow { get; set; }
+        public DbSet<Customer> Customer { get; set; }
+        public DbSet<ItemInventory> ItemInventory { get; set; }
+        public DbSet<Item> Item {  get; set; }
     }
 }
