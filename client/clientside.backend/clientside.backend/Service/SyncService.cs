@@ -4,17 +4,14 @@ using System.Diagnostics;
 
 namespace clientside.backend.Service
 {
-    public class SyncService : IHostedService
+    public class SyncService( IServiceProvider serviceProvider) : IHostedService
     {
         private Timer? _timer;
-        public SyncService(ServiceSettings serviceSettings) 
-        {
-            
-        }
+
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _timer = new Timer(async _ => await OnTimerFiredAsync(cancellationToken),
-            null, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(1));
+            null, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(1));
             return Task.CompletedTask;
         }
 
@@ -28,8 +25,11 @@ namespace clientside.backend.Service
         {
             try
             {
+                using var scope = serviceProvider.CreateScope();
+                var settingsService = scope.ServiceProvider.GetRequiredService<SettingsService>();
+                var settings = settingsService.GetByKey("LastSync");
                 // do your work here
-                Debug.WriteLine($"Syncing {DateTime.Now}");
+                Debug.WriteLine($"Syncing {DateTime.Now}. Last Sync {settings?.Value}");
             }
             finally
             {
