@@ -12,3 +12,6 @@
 /server/.vs
 /server/rol.serverside.client/.vscode
 /server/ROL.ServerSide.Server/obj
+/client/clientside.backend/.vs/clientside.backend.slnx
+/client/clientside.backend/clientside.backend/bin/Debug/net10.0
+/client/clientside.backend/clientside.backend/obj
