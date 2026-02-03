@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RolDbContext;
 
@@ -10,31 +11,14 @@ using RolDbContext;
 namespace RolDbContext.Migrations
 {
     [DbContext(typeof(RolEfContext))]
-    partial class RolEfContextModelSnapshot : ModelSnapshot
+    [Migration("20260203180148_abitofthings")]
+    partial class abitofthings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.2");
-
-            modelBuilder.Entity("RolDbContext.Models.ApplicationStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ApplicationStatus");
-                });
 
             modelBuilder.Entity("RolDbContext.Models.Customer", b =>
                 {

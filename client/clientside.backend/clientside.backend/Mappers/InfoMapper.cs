@@ -23,21 +23,21 @@
             dbinfo.Text = vminfo.Text;
             dbinfo.Title = vminfo.Title;
             dbinfo.Version = vminfo.Version;
-            dbinfo.PublishDate = vminfo.PublishDate ?? DateTime.Now ;
+            dbinfo.PublishDate = vminfo.PublishDate ?? DateTime.UtcNow ;
             dbinfo.Unpublished = vminfo.Unpublished;
             dbinfo.Status = vminfo.Status;
         }
-        public static void MapTo(this RolDbContext.Models.Info dbinfo, viewmodels.Info vminfo)
+        public static void MapTo(this viewmodels.Info vminfo, RolDbContext.Models.Info dbinfo)
         {
             dbinfo.Text = vminfo.Text;
             dbinfo.Title = vminfo.Title;
             dbinfo.Version = vminfo.Version;
-            dbinfo.PublishDate = vminfo.PublishDate ?? DateTime.Now;
+            dbinfo.PublishDate = vminfo.PublishDate ?? DateTime.UtcNow;
             dbinfo.Unpublished = vminfo.Unpublished;
             dbinfo.Status = vminfo.Status;
         }
 
-        public static void MapTo(this  viewmodels.Info vminfo, RolDbContext.Models.Info dbinfo)
+        public static void MapTo(this RolDbContext.Models.Info dbinfo, viewmodels.Info vminfo)
         {
             vminfo.Id = dbinfo.Id;
             vminfo.Text = dbinfo.Text;
@@ -66,7 +66,7 @@
                 Id = info.Id ?? Guid.NewGuid(),
                 Text = info.Text,
                 Title = info.Title,
-                PublishDate = info.PublishDate ?? DateTime.Now,
+                PublishDate = info.PublishDate ?? DateTime.UtcNow,
                 Unpublished = info.Unpublished,
                 Version = info.Version < 1 ? 1 : info.Version
             };
