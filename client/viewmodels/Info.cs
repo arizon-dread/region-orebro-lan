@@ -10,5 +10,6 @@ namespace viewmodels
         public DateTime? PublishDate { get; set; }
         public DateTime? Unpublished { get; set; }
         public int Version { get; set; }
+        public string? Status { get; set; }
     }
 }

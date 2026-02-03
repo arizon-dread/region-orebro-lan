@@ -22,6 +22,7 @@ namespace clientside.backend.Controllers
             {
                 ServiceResponseEnum.Success => Ok(response.Data),
                 ServiceResponseEnum.NotFound => StatusCode(404, response.Message),
+                ServiceResponseEnum.Conflict => StatusCode(409, response.Message),
                 _ => StatusCode(500, response.Message),
             };
         }
