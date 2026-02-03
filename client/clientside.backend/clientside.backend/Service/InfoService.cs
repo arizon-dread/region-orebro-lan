@@ -49,14 +49,14 @@ namespace clientside.backend.Service
                 }
                 info.MapTo(oldItem);
                 oldItem.Status = Status.SavedLocal;
-                oldItem.UpdatedDate = DateTime.Now;
+                oldItem.UpdatedDate = DateTime.UtcNow;
             }
             else
             {
                 var item = info.Map()!;
                 item.Status = Status.SavedLocal;
-                item.CreatedDate = DateTime.Now;
-                item.UpdatedDate = DateTime.Now;
+                item.CreatedDate = DateTime.UtcNow;
+                item.UpdatedDate = DateTime.UtcNow;
                 _context.Info.Add(item);
                 info.Id = item.Id;
             }
