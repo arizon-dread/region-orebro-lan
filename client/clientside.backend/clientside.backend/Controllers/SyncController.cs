@@ -12,7 +12,7 @@ namespace clientside.backend.Controllers
         {
             var data = new SyncViewModel {RequestDate = date };
             data.Info = infoService.UpdatedSince(date).ToList();
-            data.Order = [];
+            data.Order = orderService.UpdatedSince(date).ToList();
             return data;
         }
 

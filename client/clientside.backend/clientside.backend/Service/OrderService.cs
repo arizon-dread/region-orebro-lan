@@ -135,14 +135,15 @@ namespace clientside.backend.Service
         }
         public ServiceResponse<viewmodels.Order> Update(viewmodels.Order order)
         {
-            var customer = _context.Customer.FirstOrDefault(x => x.Id == order.Customer.Id);
+            //VARFÖR BEHÖVER JAG KÖRA TOSTRING????
+            var customer = _context.Customer.FirstOrDefault(x => x.Id.ToString().ToLower() == order.Customer.Id.ToString().ToLower());
             if (customer == null)
             {
                 //Kundens finns inte, är inte berättigad att beställa
                 return new ServiceResponse<viewmodels.Order>("Kunden finnns inte. Id: " + order.Customer.Id, Enums.ServiceResponseEnum.Error, null);
             }
 
-            var orderItem = _context.Order.FirstOrDefault(d => d.Id == order.Id);
+            var orderItem = _context.Order.FirstOrDefault(d => d.Id.ToString().ToLower() == order.Id.ToString().ToLower());
             if (orderItem.Version > order.Version)
             {
                 //TODO Return Conflict
@@ -164,7 +165,7 @@ namespace clientside.backend.Service
             {
                 var rowItem = new RolDbContext.Models.OrderRow
                 {
-                    Id = row.Id ?? Guid.NewGuid(),
+                    Id = Guid.NewGuid(),
                     Ammount = row.Ammount,
                     CreatedDate = DateTime.UtcNow,
                     Version = row.Version < 1 ? 1 : row.Version,
@@ -181,7 +182,7 @@ namespace clientside.backend.Service
 
         public ServiceResponse<viewmodels.Order> Save(viewmodels.Order order)
         {
-            var item = _context.Order.FirstOrDefault(d => d.Id == order.Id);
+            var item = _context.Order.FirstOrDefault(d => d.Id.ToString().ToLower() == order.Id.ToString().ToLower());
             if (item != null)
             {
                 return Update(order);
@@ -189,6 +190,13 @@ namespace clientside.backend.Service
             else
             {
                 return Insert(order);
+            }
+        }
+        public IEnumerable<viewmodels.Order> UpdatedSince(DateTime updateDate)
+        {
+            foreach (var item in _context.Order.Where(d => d.UpdatedDate > updateDate))
+            {
+                yield return item.Map()!;
             }
         }
         public ServiceResponse<List<viewmodels.Order>> GetAll()
