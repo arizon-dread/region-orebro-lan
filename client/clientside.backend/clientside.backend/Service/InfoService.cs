@@ -49,10 +49,9 @@ namespace clientside.backend.Service
             }
         }
 
-        public void Save(viewmodels.Info info)
+        public ServiceResponse<viewmodels.Info> Save(viewmodels.Info info)
         {
             var oldItem = _context.Info.FirstOrDefault(d => d.Id == info.Id);
-            Info? item = null;
             if (oldItem != null)
             {
                 if(oldItem.Version > info.Version)
@@ -63,12 +62,11 @@ namespace clientside.backend.Service
                 oldItem.Text = info.Text;
                 oldItem.Title = info.Title;
                 oldItem.Version = info.Version;
-                item = oldItem;
 
             }
             else
             {
-                item = new Info
+                var item = new RolDbContext.Models.Info
                 {
                    
                     Id = info.Id ?? Guid.NewGuid(),
@@ -79,9 +77,10 @@ namespace clientside.backend.Service
                     Version = info.Version < 1 ? 1 : info.Version,
                 };
                 _context.Info.Add(item);
+                info.Id = item.Id;
             }
             _context.SaveChanges();
-            return new ServiceResponse<Info>("", Enums.ServiceResponseEnum.Success, item);
+            return new ServiceResponse<viewmodels.Info>("", Enums.ServiceResponseEnum.Success, info);
         }
     }
 }
