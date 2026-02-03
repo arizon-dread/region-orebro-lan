@@ -1,6 +1,0 @@
-@ROL.Client.Server_HostAddress = http://localhost:5096
-
-GET {{ROL.Client.Server_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
