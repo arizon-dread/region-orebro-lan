@@ -13,6 +13,7 @@ export class ShoppingCart {
   public order: Order | undefined;
   constructor(private localStorageService: LocalStorageService){
   }
+  
   ngAfterViewInit(){
     this.order = this.localStorageService.getItem<Order>('shopping-cart') ?? undefined;
   }
