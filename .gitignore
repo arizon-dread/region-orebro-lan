@@ -14,3 +14,5 @@ orderdatabase.db-shm
 orderdatabase.db-wal
 **/inventory.ini
 **/ssh-key
+/client/clientside.backend/clientside.backend/Properties/PublishProfiles
+/client/clientside.backend/clientside.backend/.config

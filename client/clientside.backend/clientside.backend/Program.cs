@@ -13,7 +13,7 @@ builder.Services.AddDbContext<RolDbContext.RolEfContext>(d =>
     d.UseSqlite(connection);
 });
 builder.Services.AddConfiguration<ServiceSettings>(builder.Configuration);
-builder.Services.AddHostedService<SyncService>();
+builder.Services.AddHostedService<PollService>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "cors",
@@ -29,16 +29,14 @@ builder.Services.AddOpenApi();
 var app = builder.Build();
 app.UseDefaultFiles();
 app.MapStaticAssets();
+
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.MapOpenApi();
+app.UseSwaggerUI(options =>
 {
-    app.MapOpenApi();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/openapi/v1.json", "v1");
-       
-    });
-}
+    options.SwaggerEndpoint("/openapi/v1.json", "v1");
+
+});
 
 app.UseHttpsRedirection();
 app.UseCors("cors");
