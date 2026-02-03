@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using RolDbContext.Models;
 
 namespace RolDbContext
 {
