@@ -27,4 +27,8 @@
     <ProjectReference Include="../../viewmodels\viewmodels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Settings\" />
+  </ItemGroup>
+
 </Project>

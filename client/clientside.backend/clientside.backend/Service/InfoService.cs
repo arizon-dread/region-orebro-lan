@@ -1,23 +1,17 @@
 ﻿using clientside.backend.Classes;
 using clientside.backend.DIHelper;
 using clientside.backend.Mappers;
-using clientside.backend.Settings;
 using RolDbContext;
 using viewmodels;
 
 namespace clientside.backend.Service
 {
     [Lifetime(Lifetime.Scoped)]
-    public class InfoService
+    public class InfoService(RolEfContext context, SettingsService settingsService)
     {
-        public RolEfContext _context;
-        private readonly ServiceSettings _serviceSettings;
+        private readonly RolEfContext _context = context;
+        private readonly bool isServer = settingsService.IsServer;
 
-        public InfoService(RolEfContext context, ServiceSettings serviceSettings) 
-        {
-            _context = context;
-            _serviceSettings = serviceSettings;
-        }
         public IEnumerable<viewmodels.Info> UpdatedSince (DateTime updateDate)
         {
             foreach(var item in _context.Info.Where(d => d.UpdatedDate > updateDate))
@@ -62,7 +56,7 @@ namespace clientside.backend.Service
                 }
                 info.MapTo(oldItem);
                 oldItem.UpdatedDate = DateTime.UtcNow;
-                if(_serviceSettings.IsServer)
+                if(isServer)
                 {
                     oldItem.Status = Status.SavedRemote;
                     oldItem.Version = info.Version + 1;
@@ -71,8 +65,7 @@ namespace clientside.backend.Service
             else
             {
                 var item = info.Map()!;
-
-                if (_serviceSettings.IsServer)
+                if (isServer)
                 {
                     item.Status = Status.SavedRemote;
                     item.Version = info.Version + 1;
