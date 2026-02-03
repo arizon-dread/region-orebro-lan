@@ -1,4 +1,6 @@
-﻿namespace clientside.backend.Mappers
+﻿using viewmodels;
+
+namespace clientside.backend.Mappers
 {
     public static class InfoMapper
     {
@@ -34,7 +36,7 @@
             dbinfo.Version = vminfo.Version;
             dbinfo.PublishDate = vminfo.PublishDate ?? DateTime.UtcNow;
             dbinfo.Unpublished = vminfo.Unpublished;
-            dbinfo.Status = vminfo.Status;
+            dbinfo.Status = vminfo.Status ?? Status.SavedLocal;
         }
 
         public static void MapTo(this RolDbContext.Models.Info dbinfo, viewmodels.Info vminfo)
@@ -68,7 +70,8 @@
                 Title = info.Title,
                 PublishDate = info.PublishDate ?? DateTime.UtcNow,
                 Unpublished = info.Unpublished,
-                Version = info.Version < 1 ? 1 : info.Version
+                Version = info.Version < 1 ? 1 : info.Version,
+                Status = info.Status ?? Status.SavedLocal
             };
             return response;
         }
