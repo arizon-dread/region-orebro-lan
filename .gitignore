@@ -9,3 +9,6 @@
 /client/ROL.Client.Server/obj
 /client/rol.client/.vscode
 /client/ROL.Server/obj
+/server/.vs
+/server/rol.serverside.client/.vscode
+/server/ROL.ServerSide.Server/obj
