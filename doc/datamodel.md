@@ -24,7 +24,7 @@ Info
     Unpublished (DataTime?)
 ```
 ## Beställningar
-...
+```
 Order
     Id (Guid)
     OrderDate (DateTime)
@@ -32,7 +32,7 @@ Order
     DeliveryCity (string)
     DeliveryPostalCode (string)
     Customer (string)    
-...
+```
 ```
 OrderRow
     Id (Guid)
