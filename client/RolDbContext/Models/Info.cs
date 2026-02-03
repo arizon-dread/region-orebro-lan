@@ -1,4 +1,4 @@
-﻿namespace RolDbContext
+﻿namespace RolDbContext.Models
 {
     public class Info : EntryBase
     {
