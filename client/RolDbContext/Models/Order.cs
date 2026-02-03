@@ -4,9 +4,8 @@ using System.Text;
 
 namespace RolDbContext.Models
 {
-    public class Order
+    public class Order : EntryBase
     {
-        public Guid Id { get; set; }
         public DateTime OrderDate { get; set; }
         public Guid CustomerId { get; set; }
         public string DeliveryAddress { get; set; }
