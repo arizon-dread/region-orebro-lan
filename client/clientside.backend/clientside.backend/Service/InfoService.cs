@@ -2,7 +2,6 @@
 using clientside.backend.DIHelper;
 using clientside.backend.Mappers;
 using RolDbContext;
-using RolDbContext.Models;
 using viewmodels;
 
 namespace clientside.backend.Service
@@ -15,38 +14,27 @@ namespace clientside.backend.Service
         {
             _context = context;
         }
+        public IEnumerable<viewmodels.Info> UpdatedSince (DateTime updateDate)
+        {
+            foreach(var item in _context.Info.Where(d => d.UpdatedDate > updateDate))
+            {
+                yield return item.Map()!;
+            }
+        }
         public IEnumerable<viewmodels.Info> All() 
         {
             var items = _context.Info;
-            foreach (var item in items)
+            foreach (var item in items.OrderBy(d => d.PublishDate))
             {
-                yield return new viewmodels.Info
-                {
-
-                    Id = item.Id,
-                    PublishDate = item.PublishDate,
-                    Unpublished = item.Unpublished,
-                    Text = item.Text,
-                    Title = item.Title,
-                    Version = item.Version,
-                };
+                yield return item.Map()!;
             }
         }
         public IEnumerable<viewmodels.Info> Active()
         {
             var items = _context.Info;
-            foreach (var item in items.Where(d => d.Unpublished == null))
+            foreach (var item in items.Where(d => d.Unpublished == null).OrderBy(d => d.PublishDate))
             {
-                yield return new viewmodels.Info
-                {
-
-                    Id = item.Id,
-                    PublishDate = item.PublishDate,
-                    Unpublished = item.Unpublished,
-                    Text = item.Text,
-                    Title = item.Title,
-                    Version = item.Version,
-                };
+                yield return item.Map()!;
             }
         }
 
@@ -61,12 +49,14 @@ namespace clientside.backend.Service
                 }
                 info.MapTo(oldItem);
                 oldItem.Status = Status.SavedLocal;
+                oldItem.UpdatedDate = DateTime.Now;
             }
             else
             {
                 var item = info.Map()!;
                 item.Status = Status.SavedLocal;
                 item.CreatedDate = DateTime.Now;
+                item.UpdatedDate = DateTime.Now;
                 _context.Info.Add(item);
                 info.Id = item.Id;
             }
