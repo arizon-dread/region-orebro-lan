@@ -45,6 +45,7 @@ namespace clientside.backend.Service
             {
                 if (oldItem.Version > info.Version)
                 {
+                    //TODO Return the "newest" object
                     return new ServiceResponse<viewmodels.Info>("En nyare version finns redan", Enums.ServiceResponseEnum.Conflict, info);
                 }
                 info.MapTo(oldItem);

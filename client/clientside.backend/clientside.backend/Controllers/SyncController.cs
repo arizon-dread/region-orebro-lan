@@ -5,7 +5,7 @@ using viewmodels;
 
 namespace clientside.backend.Controllers
 {
-    public class SyncController(InfoService infoService, OrderService orderService) : ControllerBase
+    public class SyncController(InfoService infoService, OrderService orderService) : BaseController
     {
         [HttpGet("changed/{date}")]
         public SyncViewModel GetUpdatedSince(DateTime date)

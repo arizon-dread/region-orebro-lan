@@ -10,11 +10,7 @@ namespace RolDbContext
             dbContextBuilder.UseSqlite(connectionString);
 
             var context = new RolEfContext(dbContextBuilder.Options);
-            try
-            {
-                context.Database.Migrate();
-            }
-            catch { }
+            context.Database.Migrate();
             context.Database.EnsureCreated();
             var item = context.ApplicationStatus.FirstOrDefault(d => d.Key == "LastSync");
             bool doSave = false;
