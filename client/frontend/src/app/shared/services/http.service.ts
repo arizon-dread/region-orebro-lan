@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class HttpService {
-  private apiPath: string = "https://localhost:7089";
+  private apiPath: string = "http://localhost:5111";
   private http = inject(HttpClient);
 
   get(){
