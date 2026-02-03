@@ -1,5 +1,6 @@
 ﻿using clientside.backend.Classes;
 using clientside.backend.DIHelper;
+using clientside.backend.Mappers;
 using RolDbContext;
 using RolDbContext.Models;
 using viewmodels;
@@ -54,28 +55,18 @@ namespace clientside.backend.Service
             var oldItem = _context.Info.FirstOrDefault(d => d.Id == info.Id);
             if (oldItem != null)
             {
-                if(oldItem.Version > info.Version)
+                if (oldItem.Version > info.Version)
                 {
-                    //TODO Return Conflict
+                    return new ServiceResponse<viewmodels.Info>("En nyare version finns redan", Enums.ServiceResponseEnum.Conflict, info);
                 }
-                oldItem.Unpublished = info.Unpublished;
-                oldItem.Text = info.Text;
-                oldItem.Title = info.Title;
-                oldItem.Version = info.Version;
-
+                info.MapTo(oldItem);
+                oldItem.Status = Status.SavedLocal;
             }
             else
             {
-                var item = new RolDbContext.Models.Info
-                {
-                   
-                    Id = info.Id ?? Guid.NewGuid(),
-                    PublishDate = DateTime.Now,
-                    CreatedDate = DateTime.Now,
-                    Text = info.Text,
-                    Title = info.Title,
-                    Version = info.Version < 1 ? 1 : info.Version,
-                };
+                var item = info.Map()!;
+                item.Status = Status.SavedLocal;
+                item.CreatedDate = DateTime.Now;
                 _context.Info.Add(item);
                 info.Id = item.Id;
             }
