@@ -1,12 +1,16 @@
 export class Customer {
     id: string;
-    deliveryAddress: string;
-    deliveryCity: string;
-    deliveryPostalCode: string;
-    constructor(id: string, deliveryAddress: string, deliveryCity: string, deliveryPostalCode: string){
+    version: number;
+    status: string | undefined;
+    createDate: Date;
+    updateDate: Date;
+    name: string;
+    constructor(id: string, version: number, status: string | undefined, createDate: Date, updateDate: Date, name: string){
         this.id = id;
-        this.deliveryAddress = deliveryAddress;
-        this.deliveryCity = deliveryCity;
-        this.deliveryPostalCode = deliveryPostalCode;
+        this.version = version;
+        this.status = status;
+        this.createDate = createDate;
+        this.updateDate = updateDate;
+        this.name = name;
     }
 }

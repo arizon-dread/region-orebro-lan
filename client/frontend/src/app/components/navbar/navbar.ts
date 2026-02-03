@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CustomerService } from '../../shared/services/customer.service';
 
 @Component({
   standalone: true,
@@ -8,5 +9,6 @@ import { Component } from '@angular/core';
   styleUrl: './navbar.css',
 })
 export class Navbar {
-
+  constructor(protected customerService: CustomerService){
+  }
 }
