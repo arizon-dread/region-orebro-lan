@@ -7,7 +7,8 @@ namespace clientside.backend.Controllers
     {
         private readonly OrderService _orderService;
 
-        public OrderController(OrderService orderService) {
+        public OrderController(OrderService orderService)
+        {
             _orderService = orderService;
         }
         [HttpGet("all")]
@@ -24,6 +25,19 @@ namespace clientside.backend.Controllers
                 return BadRequest();
             }
             var response = _orderService.Save(order);
+            return HandleResponseWrapperAndReturnResponseData(response);
+        }
+        [HttpGet("{id}")]
+        public IActionResult GetOrder(Guid id)
+        {
+            var response = _orderService.Get(id);
+            return HandleResponseWrapperAndReturnResponseData(response);
+        }
+        [HttpDelete("{id}")]
+        public IActionResult DeleteOrder(Guid id)
+        {
+            var response = _orderService.Delete(id);
+
             return HandleResponseWrapperAndReturnResponseData(response);
         }
     }

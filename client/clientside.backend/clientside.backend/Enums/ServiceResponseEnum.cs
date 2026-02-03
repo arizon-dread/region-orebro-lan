@@ -5,6 +5,7 @@
         Success,
         Error,
         NotFound,
-        Conflict
+        Conflict,
+        Deleted
     }
 }
