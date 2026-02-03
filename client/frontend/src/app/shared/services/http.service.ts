@@ -9,7 +9,7 @@ export class HttpService {
   private http = inject(HttpClient);
 
   get(){
-    this.http.get(this.apiPath + '/order/ready').subscribe((res) => {
+    this.http.get<string>(this.apiPath + '/ready').subscribe((res) => {
        console.log('Response: ', res);
     });
   }
