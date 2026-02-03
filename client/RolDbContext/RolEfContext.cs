@@ -10,5 +10,9 @@ namespace RolDbContext
         DbSet<Info> Info { get; set; }
         DbSet<Order> Order { get; set; }
         DbSet<OrderRow> OrderRow { get; set; }
+        DbSet<Customer> Customer { get; set; }
+        DbSet<ItemInventory> ItemInventory { get; set; }
+        DbSet<Item> Item { get; set; }
+
     }
 }
