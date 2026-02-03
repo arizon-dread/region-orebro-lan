@@ -7,11 +7,10 @@ namespace clientside.backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ItemController : ControllerBase
+    public class InfoController : ControllerBase
     {
-        private List<string> _types = new List<string> { "Info", "Order" };
         private readonly InfoService _itemService;
-        public ItemController(InfoService itemService) 
+        public InfoController(InfoService itemService) 
         { 
             _itemService = itemService;
         }
@@ -21,18 +20,7 @@ namespace clientside.backend.Controllers
             return Ok();
         }
         
-        [HttpGet("{type}")]
-        public ActionResult Get(string type)
-        {
-            return Ok(type);
-        }
-        [HttpGet("types")]
-        public IEnumerable<string> Get()
-        {
-            return _types;
-        }
-
-        [HttpPost("/info")]
+        [HttpPost]
         public ActionResult SaveInfo(viewmodels.Info info)
         {
             if (info == null)
