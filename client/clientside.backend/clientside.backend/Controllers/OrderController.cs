@@ -3,26 +3,28 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace clientside.backend.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class OrderController : ControllerBase
+    public class OrderController : BaseController
     {
-        private readonly OrderService _service;
+        private readonly OrderService _orderService;
 
         public OrderController(OrderService orderService) {
-            _service = orderService;
+            _orderService = orderService;
         }
-        [HttpGet("/get")]
-        public IActionResult Get()
+        [HttpGet("all")]
+        public IActionResult GetAll()
         {
-
-            return Ok();
+            var response = _orderService.GetAll();
+            return HandleResponseWrapperAndReturnResponseData(response);
         }
-
-        [HttpGet("/ready")]
-        public IActionResult Ready()
+        [HttpPost]
+        public IActionResult SaveOrder(viewmodels.Order order)
         {
-            return new JsonResult("Ready");
+            if (order == null)
+            {
+                return BadRequest();
+            }
+            var response = _orderService.Save(order);
+            return HandleResponseWrapperAndReturnResponseData(response);
         }
     }
 }

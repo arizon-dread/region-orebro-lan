@@ -4,6 +4,7 @@
     {
         Success,
         Error,
-        NotFound
+        NotFound,
+        Conflict
     }
 }

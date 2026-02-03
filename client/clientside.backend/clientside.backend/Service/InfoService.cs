@@ -70,8 +70,8 @@ namespace clientside.backend.Service
                 {
                    
                     Id = info.Id ?? Guid.NewGuid(),
-                    PublishDate = DateTime.Now,
-                    CreatedDate = DateTime.Now,
+                    PublishDate = DateTime.UtcNow,
+                    CreatedDate = DateTime.UtcNow,
                     Text = info.Text,
                     Title = info.Title,
                     Version = info.Version < 1 ? 1 : info.Version,
