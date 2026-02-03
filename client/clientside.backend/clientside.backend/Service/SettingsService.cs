@@ -32,6 +32,7 @@ namespace clientside.backend.Service
             {
                 old.Key = model.Key;
                 old.Value = model.Value;
+                context.SaveChanges();
             }
             else
             {

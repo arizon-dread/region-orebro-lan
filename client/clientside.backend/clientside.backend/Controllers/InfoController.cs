@@ -16,6 +16,7 @@ namespace clientside.backend.Controllers
         {
             return _infoService.Active();
         }
+
         [HttpGet("all")]
         public IEnumerable<Info> GetAll()
         {
@@ -32,6 +33,7 @@ namespace clientside.backend.Controllers
             var response = _infoService.Save(info);
             return HandleResponseWrapperAndReturnResponseData(response);
         }
+        
 
     }
 }

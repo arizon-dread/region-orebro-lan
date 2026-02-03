@@ -1,6 +1,7 @@
 ﻿using clientside.backend.Classes;
 using clientside.backend.DIHelper;
 using clientside.backend.Mappers;
+using clientside.backend.Settings;
 using RolDbContext;
 using viewmodels;
 
@@ -10,9 +11,12 @@ namespace clientside.backend.Service
     public class InfoService
     {
         public RolEfContext _context;
-        public InfoService(RolEfContext context) 
+        private readonly ServiceSettings _serviceSettings;
+
+        public InfoService(RolEfContext context, ServiceSettings serviceSettings) 
         {
             _context = context;
+            _serviceSettings = serviceSettings;
         }
         public IEnumerable<viewmodels.Info> UpdatedSince (DateTime updateDate)
         {
@@ -20,6 +24,14 @@ namespace clientside.backend.Service
             {
                 yield return item.Map()!;
             }
+        }
+        public IEnumerable<viewmodels.Info> GetSavedLocal()
+        {
+            foreach (var item in _context.Info.Where(d => d.Status == Status.SavedLocal))
+            {
+                yield return item.Map()!;
+            }
+
         }
         public IEnumerable<viewmodels.Info> All() 
         {
@@ -45,20 +57,31 @@ namespace clientside.backend.Service
             {
                 if (oldItem.Version > info.Version)
                 {
+                    //TODO Return the "newest" object
                     return new ServiceResponse<viewmodels.Info>("En nyare version finns redan", Enums.ServiceResponseEnum.Conflict, info);
                 }
                 info.MapTo(oldItem);
-                oldItem.Status = Status.SavedLocal;
                 oldItem.UpdatedDate = DateTime.UtcNow;
+                if(_serviceSettings.IsServer)
+                {
+                    oldItem.Status = Status.SavedRemote;
+                    oldItem.Version = info.Version + 1;
+                }
             }
             else
             {
                 var item = info.Map()!;
-                item.Status = Status.SavedLocal;
+
+                if (_serviceSettings.IsServer)
+                {
+                    item.Status = Status.SavedRemote;
+                    item.Version = info.Version + 1;
+                }
                 item.CreatedDate = DateTime.UtcNow;
                 item.UpdatedDate = DateTime.UtcNow;
                 _context.Info.Add(item);
-                info.Id = item.Id;
+                info = item.Map()!;
+                
             }
             _context.SaveChanges();
             return new ServiceResponse<viewmodels.Info>("", Enums.ServiceResponseEnum.Success, info);

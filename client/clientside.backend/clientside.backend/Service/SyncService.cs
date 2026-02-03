@@ -1,39 +1,80 @@
-﻿
-using clientside.backend.Settings;
-using System.Diagnostics;
+﻿using clientside.backend.DIHelper;
+using RolDbContext;
+using viewmodels;
 
 namespace clientside.backend.Service
 {
-    public class SyncService( IServiceProvider serviceProvider) : IHostedService
+    [Lifetime(Lifetime.Scoped)]
+    public class SyncService
     {
-        private Timer? _timer;
+        private readonly SettingsService settingsService;
+        private readonly OrderService orderService;
+        private readonly InfoService infoService;
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public SyncService(SettingsService settings, OrderService order, InfoService info)
         {
-            _timer = new Timer(async _ => await OnTimerFiredAsync(cancellationToken),
-            null, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(1));
-            return Task.CompletedTask;
+            settingsService = settings;
+            orderService = order;
+            infoService = info;
         }
-
-        public Task StopAsync(CancellationToken cancellationToken)
+        public async Task<bool> Synchronize()
         {
-            _timer.Dispose();
-            
-            return Task.CompletedTask;
+            await SynchronizeFromServer();
+            await SynchronizeToServer();
+            return true;
         }
-        private async Task OnTimerFiredAsync(CancellationToken cancellationToken)
+        private async Task<bool> SynchronizeToServer()
         {
+            var infos = infoService.GetSavedLocal();
+            if (!infos.Any()) return true;
+            var serverAddress = settingsService.GetByKey("ServerAddress")?.Value;
+            var lastSync = settingsService.GetByKey("LastSync");
+            if (!Uri.TryCreate(serverAddress, UriKind.Absolute, out var url)) return false;
+            using var client = new HttpClient { BaseAddress = url };
             try
             {
-                using var scope = serviceProvider.CreateScope();
-                var settingsService = scope.ServiceProvider.GetRequiredService<SettingsService>();
-                var settings = settingsService.GetByKey("LastSync");
-                // do your work here
-                Debug.WriteLine($"Syncing {DateTime.Now}. Last Sync {settings?.Value}");
+                foreach (var info in infos)
+                {
+                    var apa = await client.PostAsJsonAsync("api/v1/info", info);
+                }
             }
-            finally
+            catch (Exception ex)
             {
-                _timer?.Change(TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(1));
+                return false;
+            }
+
+            return true;
+        }
+
+        private async Task<bool> SynchronizeFromServer()
+        {
+            var serverAddress = settingsService.GetByKey("ServerAddress")?.Value;
+            var lastSync = settingsService.GetByKey("LastSync");
+            if (!Uri.TryCreate(serverAddress, UriKind.Absolute, out var url)) return false;
+            if (!DateTime.TryParse(lastSync?.Value, out var date)) return false;
+            using var client = new HttpClient { BaseAddress = url };
+            var now = DateTime.UtcNow;
+            try
+            {
+                var data = await client.GetFromJsonAsync<viewmodels.SyncViewModel>($"api/v1/sync/changed/{date}");
+                lastSync.Value = now.ToString();
+                settingsService.Save(lastSync);
+                foreach (var item in data.Info)
+                {
+                    item.Status = Status.SavedRemote;
+                    infoService.Save(item);
+                }
+                foreach (var item in data.Order)
+                {
+                    item.Status = Status.SavedRemote;
+                    orderService.Save(item);
+                }
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
     }
