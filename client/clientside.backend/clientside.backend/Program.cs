@@ -1,8 +1,17 @@
+using clientside.backend.DIHelper;
+using Microsoft.EntityFrameworkCore;
+using RolDbContext;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<RolDbContext.RolEfContext>(d =>
+{
+    var connection = builder.Configuration.GetConnectionString("Sqlite");
+    d.UseSqlite(connection);
+});
 
 builder.Services.AddControllers();
+builder.Services.AddServices();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
