@@ -1,0 +1,6 @@
+@clientside.backend_HostAddress = http://localhost:5111
+
+GET {{clientside.backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
