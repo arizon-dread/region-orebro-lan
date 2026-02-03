@@ -5,14 +5,14 @@
         </div>
         <div class="card-body">
             @if(this.order){
-            @for(item of this.order.orderRows; track item.id){
+            @for(orderRow of this.order.orderRows; track orderRow.id){
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
-                    <h5>{{item.id}}</h5>
-                    <p class="mb-0">Antal: {{item.amount}}</p>
+                    <h5>{{orderRow.id}}</h5>
+                    <p class="mb-0">Antal: {{orderRow.ammount}}</p>
                 </div>
                 <div>
-                    <p class="mb-0">Pris: {{item.amount}} kr</p>
+                    <p class="mb-0">Pris: {{orderRow.item.price * orderRow.ammount}} kr</p>
                 </div>
             </div>
             }
