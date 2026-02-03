@@ -46,12 +46,6 @@
           "SQLitePCLRaw.core": "2.1.11"
         }
       },
-      "Microsoft.NET.ILLink.Tasks": {
-        "type": "Direct",
-        "requested": "[10.0.1, )",
-        "resolved": "10.0.1",
-        "contentHash": "ISahzLHsHY7vrwqr2p1YWZ+gsxoBRtH7gWRDK8fDUst9pp2He0GiesaqEfeX0V8QMCJM3eNEHGGpnIcPjFo2NQ=="
-      },
       "Swashbuckle.AspNetCore.SwaggerUI": {
         "type": "Direct",
         "requested": "[10.1.1, )",
@@ -293,13 +287,6 @@
       },
       "viewmodels": {
         "type": "Project"
-      }
-    },
-    "net10.0/win-x86": {
-      "SQLitePCLRaw.lib.e_sqlite3": {
-        "type": "Transitive",
-        "resolved": "2.1.11",
-        "contentHash": "Ev2ytaXiOlWZ4b3R67GZBsemTINslLD1DCJr2xiacpn4tbapu0Q4dHEzSvZSMnVWeE5nlObU3VZN2p81q3XOYQ=="
       }
     }
   }
