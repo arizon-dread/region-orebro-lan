@@ -7,12 +7,8 @@
 	  <SpaRoot>../../frontend</SpaRoot>
 	  <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
 	  <SpaProxyServerUrl>http://localhost:4200</SpaProxyServerUrl>
-	  <!-- Generate the lock file -->
-	  <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-
-	  <!-- Restore the exact packages as listed in the lock file -->
-	  <RestoreLockedMode Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</RestoreLockedMode>
-
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <RestoreLockedMode Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</RestoreLockedMode>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.2" />
