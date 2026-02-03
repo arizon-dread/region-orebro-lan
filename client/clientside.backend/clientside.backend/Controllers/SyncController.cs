@@ -5,7 +5,7 @@ using viewmodels;
 
 namespace clientside.backend.Controllers
 {
-    public class SyncController(InfoService infoService, OrderService orderService) : BaseController
+    public class SyncController(InfoService infoService, OrderService orderService, ItemService itemService) : BaseController
     {
         [HttpGet("changed/{date}")]
         public SyncViewModel GetUpdatedSince(DateTime date)
@@ -13,6 +13,7 @@ namespace clientside.backend.Controllers
             var data = new SyncViewModel {RequestDate = date };
             data.Info = infoService.UpdatedSince(date).ToList();
             data.Order = orderService.UpdatedSince(date).ToList();
+            data.Item = itemService.UpdatedSince(date).ToList();
             return data;
         }
 
