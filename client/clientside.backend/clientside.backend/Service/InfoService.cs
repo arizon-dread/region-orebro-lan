@@ -2,6 +2,7 @@
 using clientside.backend.DIHelper;
 using RolDbContext;
 using RolDbContext.Models;
+using viewmodels;
 
 namespace clientside.backend.Service
 {
@@ -13,7 +14,42 @@ namespace clientside.backend.Service
         {
             _context = context;
         }
-        public ServiceResponse<Info> Save(viewmodels.Info info)
+        public IEnumerable<viewmodels.Info> All() 
+        {
+            var items = _context.Info;
+            foreach (var item in items)
+            {
+                yield return new viewmodels.Info
+                {
+
+                    Id = item.Id,
+                    PublishDate = item.PublishDate,
+                    Unpublished = item.Unpublished,
+                    Text = item.Text,
+                    Title = item.Title,
+                    Version = item.Version,
+                };
+            }
+        }
+        public IEnumerable<viewmodels.Info> Active()
+        {
+            var items = _context.Info;
+            foreach (var item in items.Where(d => d.Unpublished == null))
+            {
+                yield return new viewmodels.Info
+                {
+
+                    Id = item.Id,
+                    PublishDate = item.PublishDate,
+                    Unpublished = item.Unpublished,
+                    Text = item.Text,
+                    Title = item.Title,
+                    Version = item.Version,
+                };
+            }
+        }
+
+        public void Save(viewmodels.Info info)
         {
             var oldItem = _context.Info.FirstOrDefault(d => d.Id == info.Id);
             Info? item = null;

@@ -1,23 +1,28 @@
 ﻿using clientside.backend.Service;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace clientside.backend.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class OrderController : ControllerBase
     {
-        private readonly InfoService _orderService;
+        private readonly OrderService _service;
 
-        public OrderController(InfoService orderService) {
-            _orderService = orderService;
+        public OrderController(OrderService orderService) {
+            _service = orderService;
         }
-        [HttpGet]
+        [HttpGet("/get")]
         public IActionResult Get()
         {
 
             return Ok();
+        }
+
+        [HttpGet("/ready")]
+        public IActionResult Ready()
+        {
+            return new JsonResult("Ready");
         }
     }
 }
