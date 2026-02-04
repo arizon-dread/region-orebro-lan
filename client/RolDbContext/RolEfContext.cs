@@ -25,7 +25,8 @@ namespace RolDbContext
                          Price = 6.99,
                          Status = "SavedLocal",
                          UpdatedDate = DateTime.UtcNow,
-                         Version = 1
+                         Version = 1,
+                         Active = true
                      }
                     );
                 context.SaveChanges();
@@ -44,7 +45,8 @@ namespace RolDbContext
                          Price = 1399,
                          Status = "SavedLocal",
                          UpdatedDate = DateTime.UtcNow,
-                         Version = 1
+                         Version = 1,
+                         Active = true
                      }
                     );
                 context.SaveChanges();

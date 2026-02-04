@@ -15,6 +15,7 @@ namespace clientside.backend.Mappers
                 Ammount = orderRow.Ammount,
                 Status = orderRow.Status,
                 Version = orderRow.Version
+                
             };
             return response;
         }

@@ -19,9 +19,6 @@ namespace clientside.backend.Mappers
                 Status = order.Status,
                 Version = order.Version,
             };
-            foreach (var row in order.OrderRows) {
-                response.OrderRows.Add(row.Map()!);
-            }
             return response;
         }
         public static RolDbContext.Models.Order? Map(this viewmodels.Order? order)
@@ -39,9 +36,6 @@ namespace clientside.backend.Mappers
                 Version = order.Version < 1 ? 1 : order.Version,
                 CustomerId = order.Customer!.Id!.Value
             };
-            foreach (var row in order.OrderRows) {
-                response.OrderRows.Add(row.Map()!);
-            }
             return response;
         }
     }

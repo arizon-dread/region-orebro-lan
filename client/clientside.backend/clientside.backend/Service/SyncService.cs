@@ -123,7 +123,7 @@ namespace clientside.backend.Service
 
             //Synka order
             var ordersResult = await SynchronizeOrdersToServer(client);
-            result.AddRange(infoResult);
+            result.AddRange(ordersResult);
 
             return result;
         }
