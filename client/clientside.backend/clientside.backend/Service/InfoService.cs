@@ -51,16 +51,16 @@ namespace clientside.backend.Service
             {
                 if (oldItem.Version > info.Version)
                 {
-                    //TODO Return the "newest" object
-                    return new ServiceResponse<viewmodels.Info>("En nyare version finns redan", Enums.ServiceResponseEnum.Conflict, info);
+                    return new ServiceResponse<viewmodels.Info>("En nyare version finns redan", Enums.ServiceResponseEnum.Conflict, oldItem.Map()!);
                 }
                 info.MapTo(oldItem);
                 oldItem.UpdatedDate = DateTime.UtcNow;
-                if(isServer)
+                if (isServer)
                 {
                     oldItem.Status = Status.SavedRemote;
                     oldItem.Version = info.Version + 1;
                 }
+                info = oldItem.Map()!;
             }
             else
             {
