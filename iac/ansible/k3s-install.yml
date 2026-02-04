@@ -1,5 +1,5 @@
 ---
-- name: Install k3s with Cilium on Debian
+- name: Install k3s with Cilium and Traefik on Debian
   hosts: k3s
   become: true
 
@@ -10,10 +10,10 @@
       --flannel-backend=none
       --disable-network-policy
       --disable=traefik
-
     cilium_version: "1.15.5"
-
+  
   tasks:
+    # Install required packages
     - name: Install base packages
       apt:
         name:
@@ -24,6 +24,7 @@
         state: present
         update_cache: yes
 
+    # Disable swap
     - name: Disable swap
       command: swapoff -a
       when: ansible_swaptotal_mb > 0
@@ -34,6 +35,7 @@
         regexp: '^([^#].*\sswap\s.*)$'
         replace: '# \1'
 
+    # Load kernel modules
     - name: Load kernel modules
       copy:
         dest: /etc/modules-load.d/k8s.conf
@@ -41,6 +43,7 @@
           overlay
           br_netfilter
 
+    # Enable kernel modules
     - name: Enable kernel modules
       modprobe:
         name: "{{ item }}"
@@ -49,6 +52,7 @@
         - overlay
         - br_netfilter
 
+    # Set sysctl parameters
     - name: Set sysctl parameters
       copy:
         dest: /etc/sysctl.d/99-kubernetes.conf
@@ -63,12 +67,9 @@
     # --------------------
     # K3S INSTALL
     # --------------------
-    - name: Install k3s (no flannel)
+    - name: Install k3s with Traefik enabled
       shell: |
-        curl -sfL https://get.k3s.io | \
-        INSTALL_K3S_VERSION="{{ k3s_version }}" \
-        INSTALL_K3S_EXEC="{{ k3s_exec_args }}" \
-        sh -
+        curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="{{ k3s_version }}" INSTALL_K3S_EXEC="--write-kubeconfig-mode=644 --flannel-backend=none --disable-network-policy" sh -
       args:
         creates: /usr/local/bin/k3s
 
@@ -90,17 +91,17 @@
     # CILIUM
     # --------------------
     - name: Add Cilium Helm repo
-      command: helm repo add cilium https://helm.cilium.io
+      shell: helm repo add cilium https://helm.cilium.io
       environment:
         KUBECONFIG: /etc/rancher/k3s/k3s.yaml
 
     - name: Update Helm repos
-      command: helm repo update
+      shell: helm repo update
       environment:
         KUBECONFIG: /etc/rancher/k3s/k3s.yaml
 
     - name: Install Cilium
-      command: >
+      shell: >
         helm install cilium cilium/cilium
         --version {{ cilium_version }}
         --namespace kube-system
@@ -111,6 +112,29 @@
         KUBECONFIG: /etc/rancher/k3s/k3s.yaml
 
     - name: Wait for Cilium pods
-      command: kubectl -n kube-system rollout status ds/cilium
+      shell: kubectl -n kube-system rollout status ds/cilium
+      environment:
+        KUBECONFIG: /etc/rancher/k3s/k3s.yaml
+
+    # --------------------
+    # TRAEFIK
+    # --------------------
+    - name: Install Traefik ingress controller
+      shell: >
+        helm install traefik traefik/traefik
+        --namespace kube-system
+        --create-namespace
+        --set deployment.kind=DaemonSet
+        --set hostNetwork=true
+        --set dnsPolicy=ClusterFirstWithHostNet
+        --set ports.web.port=80
+        --set ports.websecure.port=443
+        --set service.enabled=false
+        --set securityContext.privileged=true
+      environment:
+        KUBECONFIG: /etc/rancher/k3s/k3s.yaml
+
+    - name: Wait for Traefik pods
+      shell: kubectl -n kube-system rollout status ds/traefik
       environment:
         KUBECONFIG: /etc/rancher/k3s/k3s.yaml
