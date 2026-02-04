@@ -7,10 +7,10 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS build
 ARG BUILD_CONFIGURATION=Release
+RUN apk add --update nodejs npm
 WORKDIR /src
 COPY ["clientside.backend/clientside.backend/clientside.backend.csproj", "clientside.backend/clientside.backend/"]
 COPY ["frontend/frontend.esproj", "frontend/"]
@@ -30,4 +30,5 @@ RUN dotnet publish "./clientside.backend.csproj" -c $BUILD_CONFIGURATION -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY --from=publish /src/frontend/dist/frontend ./wwwroot
 ENTRYPOINT ["dotnet", "clientside.backend.dll"]

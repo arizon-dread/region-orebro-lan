@@ -3,6 +3,8 @@
         <StartupCommand>npm start</StartupCommand>
         <JavaScriptTestFramework>Jasmine</JavaScriptTestFramework>        <!-- Allows the build (or compile) script located on package.json to run on Build -->
         <ShouldRunBuildScript>false</ShouldRunBuildScript>        <!-- Folder where production build objects will be placed -->
-        <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\YourProjectName\browser\</BuildOutputFolder>
+        <PublishCommand>npm run build -- -configuration production</PublishCommand>
+        <PublishOutputFolder>/src/frontend/dist/frontend</PublishOutputFolder>
+        <BuildOutputFolder>$(MSBuildProjectDirectory)/dist/frontend/browser/</BuildOutputFolder>
     </PropertyGroup>
 </Project>
