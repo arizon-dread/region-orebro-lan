@@ -3,6 +3,31 @@
         <h3>Beställningslista</h3>
     </div>
     <div class="card-body">
-        <p>order-list works!</p>
+        @if(this.orders()){
+            <table class="table">
+            <thead>
+                <tr>
+                <th>Beställningsnummer</th>
+                <th>Kund</th>
+                <th>Adress</th>
+                <th>Stad</th>
+                <th>Postnummer</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(order of this.orders(); track order.id){
+                <tr>
+                    <td>{{order.id}}</td>
+                    <td>{{order.customer.name}}</td>
+                    <td>{{order.deliveryAddress}}</td>
+                    <td>{{order.deliveryCity}}</td>
+                    <td>{{order.deliveryPostalCode}}</td>
+                </tr>
+                }
+        </table>
+        }
+        @else{
+            <p class="text-center">Inga beställningar hittades.</p>
+        }
     </div>
 </div>

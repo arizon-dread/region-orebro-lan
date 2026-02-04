@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { take } from 'rxjs';
 import { Order } from '../../shared/models/order';
 import { HttpService } from '../../shared/services/http.service';
@@ -14,11 +15,17 @@ import { OrderService } from '../../shared/services/order.service';
 })
 export class ShoppingCart {
   public order: Order | undefined;
-  constructor(private orderService: OrderService, private http: HttpService) {
+  constructor(private orderService: OrderService, private http: HttpService, private snackbar: MatSnackBar) {
   }
 
   ngOnInit() {
     this.order = this.orderService.getOrder() ?? undefined;
+  }
+
+  clearOrder() {
+    this.orderService.clearOrder();
+    this.order = undefined;
+    this.snackbar.open('Varukorgen rensad', 'OK', { duration: 3000 });
   }
 
   postOrder() {
@@ -28,6 +35,7 @@ export class ShoppingCart {
           if (data) {
             this.orderService.clearOrder();
             this.order = data;
+            this.snackbar.open('Beställningen lagd!', 'OK', { duration: 3000 });
           }
         },
         error: (err: HttpErrorResponse) => {

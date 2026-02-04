@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, signal, WritableSignal } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { take } from 'rxjs';
 import { Item } from '../../shared/models/item';
 import { Order } from '../../shared/models/order';
@@ -18,7 +19,7 @@ export class AddOrder {
   public items: WritableSignal<Item[] | undefined> = signal(undefined);
   public itemAmounts: {[key: string]: number} = {};
   private order: Order | undefined;
-  constructor(private httpService: HttpService, private customerService: CustomerService, private orderService: OrderService){
+  constructor(private httpService: HttpService, private customerService: CustomerService, private orderService: OrderService, private snackbar: MatSnackBar){
     
   }
 
@@ -37,6 +38,10 @@ export class AddOrder {
   }
 
   updateAmount(itemId: string, amount: number){
+    if(amount < 0){
+      this.snackbar.open('Antal kan inte vara negativt', 'OK', { duration: 3000 });
+      return;
+    }
     this.itemAmounts[itemId] = amount;
     console.log(amount);
     console.log(JSON.stringify(this.itemAmounts));
@@ -57,5 +62,6 @@ export class AddOrder {
       this.order.orderRows.push(newRow);
     }
     this.orderService.addOrder(this.order);
+    this.snackbar.open(`${newRow.ammount} ${newRow.item.name} tillagd i varukorgen`, 'OK', { duration: 3000 });
   }
 }
