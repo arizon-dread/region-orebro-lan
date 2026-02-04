@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { Info } from '../models/info';
 import { Item } from '../models/item';
 import { Order } from '../models/order';
+import { Setting } from '../models/setting';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HttpService {
   
-  private apiPath: string = "https://localhost:7089";
+  private apiPath: string = "http://localhost:5111";
   private http = inject(HttpClient);
 
   get(){
@@ -34,7 +35,14 @@ export class HttpService {
   getInformationList() : Observable<Info[]> {
     return this.http.get<Info[]>(this.apiPath + '/api/v1/info');
   }
-  saveInformation(info: Info) {
+  saveInformation(info: Info) : Observable<Info> {
     return this.http.post<Info>(this.apiPath + '/api/v1/info', info);
   }
+  getSettings() : Observable<Setting[]> {
+    return this.http.get<Setting[]>(this.apiPath + '/api/v1/settings');
+  }
+  saveSetting(setting: Setting) {
+    return this.http.post<Setting>(this.apiPath + '/api/v1/settings', setting);
+  }
+  
 }
