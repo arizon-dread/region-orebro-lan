@@ -9,8 +9,7 @@
       --write-kubeconfig-mode=644
       --flannel-backend=none
       --disable-network-policy
-      --disable=traefik
-    cilium_version: "1.15.5"
+    cilium_version: "1.19.0"
   
   tasks:
     # Install required packages
@@ -69,7 +68,7 @@
     # --------------------
     - name: Install k3s with Traefik enabled
       shell: |
-        curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="{{ k3s_version }}" INSTALL_K3S_EXEC="--write-kubeconfig-mode=644 --flannel-backend=none --disable-network-policy" sh -
+        curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="{{ k3s_version }}" INSTALL_K3S_EXEC="--write-kubeconfig-mode=644 --flannel-backend=none --disable-network-policy --disable-kube-proxy" sh -
       args:
         creates: /usr/local/bin/k3s
 
@@ -102,12 +101,13 @@
 
     - name: Install Cilium
       shell: >
-        helm install cilium cilium/cilium
+        helm upgrade --install cilium cilium/cilium
         --version {{ cilium_version }}
         --namespace kube-system
         --set kubeProxyReplacement=true
         --set k8sServiceHost=127.0.0.1
         --set k8sServicePort=6443
+        --set clustermesh.apiserver.metrics.etcd.port=9966
       environment:
         KUBECONFIG: /etc/rancher/k3s/k3s.yaml
 
