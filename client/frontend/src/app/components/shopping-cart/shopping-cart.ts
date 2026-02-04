@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, signal, WritableSignal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { take } from 'rxjs';
 import { Order } from '../../shared/models/order';
@@ -14,27 +14,27 @@ import { OrderService } from '../../shared/services/order.service';
   styleUrl: './shopping-cart.css',
 })
 export class ShoppingCart {
-  public order: Order | undefined;
+  public order: WritableSignal<Order | undefined> = signal(undefined);
   constructor(private orderService: OrderService, private http: HttpService, private snackbar: MatSnackBar) {
   }
 
   ngOnInit() {
-    this.order = this.orderService.getOrder() ?? undefined;
+    this.order.set(this.orderService.getOrder() ?? undefined);
   }
 
   clearOrder() {
     this.orderService.clearOrder();
-    this.order = undefined;
+    this.order.set(undefined);
     this.snackbar.open('Varukorgen rensad', 'OK', { duration: 3000 });
   }
 
   postOrder() {
-    if (this.order) {
-      this.http.postOrder(this.order).pipe(take(1)).subscribe({
+    if (this.order()) {
+      this.http.postOrder(this.order()!).pipe(take(1)).subscribe({
         next: (data: Order) => {
           if (data) {
             this.orderService.clearOrder();
-            this.order = undefined;
+            this.order.set(undefined);
             this.snackbar.open('Beställningen lagd!', 'OK', { duration: 3000 });
           }
         },
