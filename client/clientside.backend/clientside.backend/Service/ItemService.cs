@@ -107,5 +107,24 @@ namespace clientside.backend.Service
             return new ServiceResponse<List<viewmodels.Item>>("", Enums.ServiceResponseEnum.Success, items);
 
         }
+        public ServiceResponse<viewmodels.Item> ToggleActivation(Guid id)
+        {
+            try
+            {
+                var item = _context.Item.FirstOrDefault(x => x.Id.ToString().ToLower() == id.ToString().ToLower());
+                if (item == null)
+                {
+                    return new ServiceResponse<viewmodels.Item>("Kunde inte hitta artikel med id: " + id, ServiceResponseEnum.NotFound, null);
+                }
+                item.Active = !item.Active;
+                var itemRow = item.Map();
+                _context.SaveChanges();
+                return new ServiceResponse<viewmodels.Item>("", Enums.ServiceResponseEnum.Success, itemRow);
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse<viewmodels.Item>("Kunde inte byta aktiv status för artikel. Exception: " + ex.Message, Enums.ServiceResponseEnum.Error, null);
+            }
+        }
     }
 }

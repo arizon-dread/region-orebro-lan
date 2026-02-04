@@ -1,19 +1,19 @@
 using System.Net.Http.Headers;
 using clientside.backend.DIHelper;
 using clientside.backend.Service;
-using clientside.backend.Settings;
+
 using Microsoft.EntityFrameworkCore;
 using RolDbContext;
 var builder = WebApplication.CreateBuilder(args);
 var dbhelper = new DbHelper();
-dbhelper.Init(builder.Configuration.GetConnectionString("Sqlite"));
+dbhelper.Init(builder.Configuration.GetConnectionString("Sqlite")!);
 // Add services to the container.
 builder.Services.AddDbContext<RolDbContext.RolEfContext>(d =>
 {
     var connection = builder.Configuration.GetConnectionString("Sqlite");
     d.UseSqlite(connection);
 });
-builder.Services.AddConfiguration<ServiceSettings>(builder.Configuration);
+
 builder.Services.AddHostedService<PollService>();
 builder.Services.AddCors(options =>
 {

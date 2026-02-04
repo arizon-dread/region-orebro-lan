@@ -3,46 +3,46 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace clientside.backend.Controllers
 {
-    public class ItemController : BaseController
+    public class CustomerController : BaseController
     {
-        private readonly ItemService _itemService;
+        private readonly CustomerService _customerService;
 
-        public ItemController(ItemService itemService)
+        public CustomerController(CustomerService customerService)
         {
-            _itemService = itemService;
+            _customerService = customerService;
         }
         [HttpGet("all")]
         public IActionResult GetAll()
         {
-            var response = _itemService.GetAll();
+            var response = _customerService.GetAll();
             return HandleResponseWrapperAndReturnResponseData(response);
         }
         [HttpPost]
-        public IActionResult SaveItem(viewmodels.Item item)
+        public IActionResult SaveCustomer(viewmodels.Customer customer)
         {
-            if (item == null)
+            if (customer == null)
             {
                 return BadRequest();
             }
-            var response = _itemService.Save(item);
+            var response = _customerService.Save(customer);
             return HandleResponseWrapperAndReturnResponseData(response);
         }
         [HttpGet("{id}")]
-        public IActionResult GetItem(Guid id)
+        public IActionResult GetCustomer(Guid id)
         {
-            var response = _itemService.Get(id);
+            var response = _customerService.Get(id);
             return HandleResponseWrapperAndReturnResponseData(response);
         }
         [HttpDelete("{id}")]
-        public IActionResult DeleteItem(Guid id)
+        public IActionResult DeleteCustomer(Guid id)
         {
-            var response = _itemService.Delete(id);
+            var response = _customerService.Delete(id);
             return HandleResponseWrapperAndReturnResponseData(response);
         }
         [HttpPost("toggleactivation")]
         public IActionResult ToggleActivation(Guid id)
         {
-            var response = _itemService.ToggleActivation(id);
+            var response = _customerService.ToggleActivation(id);
             return HandleResponseWrapperAndReturnResponseData(response);
         }
     }

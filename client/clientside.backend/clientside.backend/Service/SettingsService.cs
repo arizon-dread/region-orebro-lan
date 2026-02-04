@@ -25,6 +25,7 @@ namespace clientside.backend.Service
                 Value = settings.Value
             };
         }
+        public bool IsServer => context.ApplicationStatus.FirstOrDefault(d => d.Key == "ServiceMode")?.Value == "Server";
         public ApplicationSettingsViewModel Save(ApplicationSettingsViewModel model)
         {
             var old = context.ApplicationStatus.FirstOrDefault(d => d.Id == model.Id);
