@@ -2,17 +2,17 @@ import { Customer } from "./customer";
 import { OrderRow } from "./order-row";
 
 export class Order {
-    id: string;
-    version: number;
-    statis: string | undefined;
-    createDate: Date;
-    updateDate: Date;
+    id: string | undefined;
+    version: number | undefined;
+    status: string | undefined;
+    createDate: Date | undefined;
+    updateDate: Date | undefined;
     deliveryAddress: string;
     deliveryCity: string;
     deliveryPostalCode: string;
     customer: Customer;
     orderRows: OrderRow[];
-    constructor(id: string, version: number, createDate: Date, updateDate: Date, customer: Customer, deliveryAddress: string, deliveryCity: string, deliveryPostalCode: string, orderRows: OrderRow[]){
+    private constructor(id: string | undefined, version: number | undefined, createDate: Date | undefined, updateDate: Date | undefined, customer: Customer, deliveryAddress: string, deliveryCity: string, deliveryPostalCode: string, orderRows: OrderRow[]){
         this.id = id;
         this.version = version;
         this.createDate = createDate;
@@ -22,5 +22,9 @@ export class Order {
         this.deliveryCity = deliveryCity;
         this.deliveryPostalCode = deliveryPostalCode;
         this.orderRows = orderRows;
-    }    
+    }
+
+    static createNew(customer: Customer): Order {
+        return new Order(undefined, undefined, undefined, undefined, customer, customer.deliveryAddress!, customer.deliveryCity!, customer.deliveryPostalCode!, []);
+    }
 }

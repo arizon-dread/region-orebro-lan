@@ -10,5 +10,7 @@ namespace RolDbContext.Models
         public string DeliveryAddress { get; set; }
         public string DeliveryCity { get; set; }
         public string DeliveryPostalCode { get; set; }
+        public bool Active { get; set; }
+        public List<Order> Orders { get; set; } = new List<Order>();
     }
 }

@@ -39,5 +39,11 @@ namespace clientside.backend.Controllers
             var response = _itemService.Delete(id);
             return HandleResponseWrapperAndReturnResponseData(response);
         }
+        [HttpPost("toggleactivation")]
+        public IActionResult ToggleActivation(Guid id)
+        {
+            var response = _itemService.ToggleActivation(id);
+            return HandleResponseWrapperAndReturnResponseData(response);
+        }
     }
 }

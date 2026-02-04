@@ -1,23 +1,17 @@
 ﻿using clientside.backend.Classes;
 using clientside.backend.DIHelper;
 using clientside.backend.Mappers;
-using clientside.backend.Settings;
 using RolDbContext;
 using viewmodels;
 
 namespace clientside.backend.Service
 {
     [Lifetime(Lifetime.Scoped)]
-    public class InfoService
+    public class InfoService(RolEfContext context, SettingsService settingsService)
     {
-        public RolEfContext _context;
-        private readonly ServiceSettings _serviceSettings;
+        private readonly RolEfContext _context = context;
+        private readonly bool isServer = settingsService.IsServer;
 
-        public InfoService(RolEfContext context, ServiceSettings serviceSettings) 
-        {
-            _context = context;
-            _serviceSettings = serviceSettings;
-        }
         public IEnumerable<viewmodels.Info> UpdatedSince (DateTime updateDate)
         {
             foreach(var item in _context.Info.Where(d => d.UpdatedDate > updateDate))
@@ -57,22 +51,21 @@ namespace clientside.backend.Service
             {
                 if (oldItem.Version > info.Version)
                 {
-                    //TODO Return the "newest" object
-                    return new ServiceResponse<viewmodels.Info>("En nyare version finns redan", Enums.ServiceResponseEnum.Conflict, info);
+                    return new ServiceResponse<viewmodels.Info>("En nyare version finns redan", Enums.ServiceResponseEnum.Conflict, oldItem.Map()!);
                 }
                 info.MapTo(oldItem);
                 oldItem.UpdatedDate = DateTime.UtcNow;
-                if(_serviceSettings.IsServer)
+                if (isServer)
                 {
                     oldItem.Status = Status.SavedRemote;
                     oldItem.Version = info.Version + 1;
                 }
+                info = oldItem.Map()!;
             }
             else
             {
                 var item = info.Map()!;
-
-                if (_serviceSettings.IsServer)
+                if (isServer)
                 {
                     item.Status = Status.SavedRemote;
                     item.Version = info.Version + 1;

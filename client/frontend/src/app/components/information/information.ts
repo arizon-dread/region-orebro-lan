@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, effect, OnInit, signal, WritableSignal } from '@angular/core';
 import { HttpService } from '../../shared/services/http.service';
 import { Subscription, take } from 'rxjs';
 import { Info } from '../../shared/models/info';
@@ -6,6 +6,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { InformationItem } from "./information-item/information-item";
 import { AddInformation } from "./add-information/add-information";
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { SettingsService } from '../../shared/services/settings.service';
 
 @Component({
   selector: 'app-information',
@@ -19,9 +20,9 @@ export class Information implements OnInit {
   infoDialogRef: MatDialogRef<AddInformation> | undefined;
   backdropClickSub: Subscription | undefined;
   afterClosedSub: Subscription | undefined;
-  constructor(private httpSvc: HttpService, private infoDialog: MatDialog) {
+  constructor(private httpSvc: HttpService, private infoDialog: MatDialog, protected settingsSvc:SettingsService) {
   }
-  ngOnInit(): void {
+  ngOnInit() {
     this.getInfo();
   }
   getInfo() {

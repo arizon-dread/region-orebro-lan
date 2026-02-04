@@ -1,0 +1,6 @@
+﻿namespace clientside.backend.Storage
+{
+    public class empty
+    {
+    }
+}

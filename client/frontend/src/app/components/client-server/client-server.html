@@ -1,0 +1,13 @@
+<form [formGroup]="form" class="d-flex" (ngSubmit)="saveServerUrl();">
+    <div class="pt-1">Klient</div>
+    <div class="checkbox-slider-container pt-2">
+        <label class="switch">
+            <input type="checkbox" formControlName="isServer" (change)="toggleServerClient()"/>
+            <span class="slider"></span>
+        </label>
+    </div>
+    <div class="me-4 pt-1">Server</div>
+    <div class="me-2 pt-1"><label for="serverUrl">Serveradress</label></div>
+    <div class=""><input type="text" class="form-control" id="serverUrl" formControlName="serverUrl"></div>
+    <div class="ms-2"><input type="submit" class="btn btn-primary" value="Spara" /></div>
+</form>
