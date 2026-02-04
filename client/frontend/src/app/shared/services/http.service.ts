@@ -12,8 +12,8 @@ import { Setting } from '../models/setting';
 })
 export class HttpService {
   
-  private apiPath: string = "http://localhost:5111/api/v1";
-  //private apiPath: string = "https://localhost:7089/api/v1";
+  //private apiPath: string = "http://localhost:5111/api/v1";
+  private apiPath: string = "https://localhost:7089/api/v1";
   private http = inject(HttpClient);
 
   getItems(): Observable<Item[]> {
