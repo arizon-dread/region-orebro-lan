@@ -59,7 +59,7 @@ namespace RolDbContext
                          Id = guid,
                          CreatedDate = DateTime.UtcNow,
                          Name = "Buan Jörk",
-                         Status = "SavedLocal",
+                         Status = "SavedRemote",
                          UpdatedDate = DateTime.UtcNow,
                          Version = 1,
                           DeliveryAddress = "Gatan 1",

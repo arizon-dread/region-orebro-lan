@@ -1,4 +1,7 @@
-﻿namespace clientside.backend.Mappers
+﻿using RolDbContext.Models;
+using viewmodels;
+
+namespace clientside.backend.Mappers
 {
     public static class CustomerMapper
     {
@@ -28,8 +31,8 @@
                 Id = customer.Id ?? Guid.NewGuid(),
                 CreatedDate = customer.CreatedDate,
                 UpdatedDate = customer.UpdatedDate,
-                Status = customer.Status,
-                Version = customer.Version,
+                Status = customer.Status ?? Status.SavedLocal,
+                Version = customer.Version < 1 ? 1 : customer.Version,
                 Name = customer.Name,
                 DeliveryAddress = customer.DeliveryAddress,
                 DeliveryCity = customer.DeliveryCity,
@@ -41,7 +44,7 @@
         public static void MapTo(this viewmodels.Customer vmCustomer, RolDbContext.Models.Customer dbCustomer)
         {
             dbCustomer.Version = vmCustomer.Version;
-            dbCustomer.Status = vmCustomer.Status;
+            dbCustomer.Status = vmCustomer.Status ?? Status.SavedLocal;
             dbCustomer.Name = vmCustomer.Name;
             dbCustomer.UpdatedDate = vmCustomer.UpdatedDate;
             dbCustomer.CreatedDate = vmCustomer.CreatedDate;
