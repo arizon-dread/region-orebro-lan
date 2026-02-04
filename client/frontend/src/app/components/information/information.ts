@@ -20,13 +20,9 @@ export class Information implements OnInit {
   infoDialogRef: MatDialogRef<AddInformation> | undefined;
   backdropClickSub: Subscription | undefined;
   afterClosedSub: Subscription | undefined;
-  displayAddInfo: boolean = false;
-  constructor(private httpSvc: HttpService, private infoDialog: MatDialog, private settingsSvc:SettingsService) {
-    effect(()=> {
-      this.displayAddInfo = this.settingsSvc.isServerSig();
-    })
+  constructor(private httpSvc: HttpService, private infoDialog: MatDialog, protected settingsSvc:SettingsService) {
   }
-  async ngOnInit() {
+  ngOnInit() {
     this.getInfo();
   }
   getInfo() {
