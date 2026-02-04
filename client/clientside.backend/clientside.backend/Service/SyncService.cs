@@ -20,11 +20,39 @@ namespace clientside.backend.Service
         }
         public async Task<List<string>> Synchronize()
         {
+            var alive = await IsServerAlive();
+            if (!alive)
+            {
+                return ["Remote server is not responding"];
+            }
             var sync2 = await SynchronizeToServer();
             var sync1 = await SynchronizeFromServer();
             return [.. sync1, .. sync2];
         }
+        private async Task<bool> IsServerAlive()
+        {
+            var serverAddress = settingsService.GetByKey("ServerAddress")?.Value;
+            if (!Uri.TryCreate(serverAddress, UriKind.Absolute, out var url))
+            {
+                return false;
+            }
 
+            //Skapa klient
+            using var client = new HttpClient { BaseAddress = url };
+            try
+            {
+                var response = await client.GetAsync("api/v1/health");
+                return response.IsSuccessStatusCode;
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                client.Dispose();
+            }
+        }
         private async Task<List<string>> SynchronizeInfosToServer(HttpClient client)
         {
             var infos = infoService.GetSavedLocal();
@@ -88,7 +116,6 @@ namespace clientside.backend.Service
             //Skapa klient
             using var client = new HttpClient { BaseAddress = url };
 
-            //TODO: Kolla om servern är nere
 
             //Synka info
             var infoResult = await SynchronizeInfosToServer(client);
