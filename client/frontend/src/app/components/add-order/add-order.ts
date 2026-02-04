@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal, WritableSignal } from '@angular/core';
 import { Item } from '../../shared/models/item';
 import { OrderRow } from '../../shared/models/order-row';
 import { CustomerService } from '../../shared/services/customer.service';
@@ -11,10 +11,14 @@ import { HttpService } from '../../shared/services/http.service';
   styleUrl: './add-order.css',
 })
 export class AddOrder {
-  public items: Item[] | undefined;
+  public items: WritableSignal<Item[] | undefined> = signal(undefined);
   constructor(private httpService: HttpService, private customerService: CustomerService){
-    httpService.getItems().subscribe((data) => {
-      this.items = data;
+    
+  }
+
+  ngOnInit(){
+    this.httpService.getItems().subscribe((data) => {
+      this.items.set(data);
     });
   }
 

@@ -3,8 +3,8 @@
         <h3>Ny beställning</h3>
     </div>
     <div class="card-body">
-        @if(this.items){
-            @for(item of this.items; track item.id){
+        @if(this.items()){
+            @for(item of this.items(); track item.id){
             <div class="mb-3">
                 <h5>{{item.name}}</h5>
                 <p>{{item.manufacturer}}</p>

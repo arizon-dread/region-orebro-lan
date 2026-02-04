@@ -74,7 +74,11 @@ export class Information implements OnInit {
       });
       this.infoDialogRef.afterClosed().subscribe({
         next: (data: Info) => {
-          resolve(data);
+          if (data) {
+            resolve(data);
+            return;
+          }
+          reject();
         }
       });
     }

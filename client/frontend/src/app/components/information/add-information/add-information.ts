@@ -39,7 +39,7 @@ export class AddInformation implements OnInit {
     //validate form
     let id: string;
     let version: number;
-    if (!this.data) {
+    if (!this.data?.id) {
       id = crypto.randomUUID();
       version = 1;
     } else {
