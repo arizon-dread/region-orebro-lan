@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SettingsService } from '../../shared/services/settings.service';
 import { HttpService } from '../../shared/services/http.service';
@@ -18,14 +18,17 @@ export class ClientServer implements OnInit {
     isServer: new FormControl<boolean>(false),
   });
   serverUrl: Setting | undefined;
+  isServer: boolean | undefined;
 
   constructor(private settingsSvc: SettingsService, private http: HttpService) {
-
+    effect(() => {
+        this.form.controls.isServer.setValue(this.settingsSvc.isServerSig());
+        this.isServer = settingsSvc.isServerSig();
+    })
   }
   async ngOnInit() {
-    let isServer = await this.settingsSvc.isServer();
-    console.log("isServer: " + isServer);
-    this.form.controls.isServer.setValue(isServer);
+    console.log("isServer: " + this.isServer);
+    this.form.controls.isServer.setValue(this.settingsSvc.isServerSig());
     this.http.getSettings().pipe(take(1)).subscribe({
       next: (data: Setting[]) => {
         if (data) {
@@ -42,7 +45,9 @@ export class ClientServer implements OnInit {
   toggleServerClient() {
     if (this.form.controls.isServer.value) {
       this.form.controls.serverUrl.setValue("");
+      this.saveServerUrl();
     }
+    console.log("isServer: " + this.form.controls.isServer.value);
     this.settingsSvc.setIsServer(this.form.controls.isServer.value ?? false);
   }
   saveServerUrl() {

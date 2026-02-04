@@ -79,12 +79,17 @@ namespace clientside.backend.Service
         }
         private async Task<List<string>> SynchronizeOrdersToServer(HttpClient client)
         {
-            var orders = orderService.GetSavedLocal();
-            var result = new List<string>
+            var result = new List<string>();
+
+            var ordersResponse = orderService.GetSavedLocal();
+            if(ordersResponse.Status != Enums.ServiceResponseEnum.Success)
             {
-                "* SynchronizeToServer",
-                $"Number of orders localy saved: {orders.Count()}"
-            };
+                result.Add("Could not synchronize orders");
+                result.Add(ordersResponse.Message);
+            }
+            var orders = ordersResponse.Data;
+            result.Add("* SynchronizeToServer");
+            result.Add($"Number of orders localy saved: {orders.Count()}");
             if (!orders.Any()) return result;
 
             try
