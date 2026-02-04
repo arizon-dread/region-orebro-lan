@@ -6,7 +6,7 @@ Vi har bestämt oss för att bygga en tjänst som dels tillhandahåller viktig i
 
 ## Arkitektur
 
-Systemet kommer bestå av en klientdel, som kommer köras på varje dator, och en serverdel, som kommer köras som en central del. Tanken med projektet är att klienterna ska kunna fungera oavsett om servern är online eller inte.
+Systemet kommer bestå av en klientdel, som kommer köras på varje dator, och en serverdel, som kommer köras som en central del. Tanken med projektet är att klienterna ska kunna fungera oavsett om servern är online eller inte, med andra ord ett offline-first mönster.
 
 Synkronisering av data kommer mellan klient och server kommer att ske kontinuerligt. I de fall där servern tillfälligt inte kan kontaktas så kommer klienten hålla  informationen lokalt och göra nya försök till synkronisering senare.
 
