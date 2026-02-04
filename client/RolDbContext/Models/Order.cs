@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace RolDbContext.Models
@@ -10,6 +11,7 @@ namespace RolDbContext.Models
         public string DeliveryAddress { get; set; }
         public string DeliveryCity { get; set; }
         public string DeliveryPostalCode { get; set; }
-        public List<OrderRow> OrderRows { get; set; } = new List<OrderRow>();
+        //[NotMapped]
+        //public List<OrderRow> OrderRows { get; set; } = new List<OrderRow>();
     }
 }

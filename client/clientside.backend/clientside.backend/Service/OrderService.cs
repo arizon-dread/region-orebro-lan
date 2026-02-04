@@ -63,7 +63,7 @@ namespace clientside.backend.Service
                     var item = _context.Item.FirstOrDefault(x => x.Id.ToString().ToLower() == row.ItemId.ToString().ToLower()).Map();
                     if (item == null)
                     {
-                        return new ServiceResponse<viewmodels.Order>("Kunde inte hitta artikeln med id: " + item.Id, ServiceResponseEnum.NotFound, null);
+                        return new ServiceResponse<viewmodels.Order>("Kunde inte hitta artikeln med id: " + row.ItemId, ServiceResponseEnum.NotFound, null);
                     }
 
                     var orderRow = row.Map();
