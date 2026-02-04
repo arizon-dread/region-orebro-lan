@@ -24,7 +24,7 @@ export class Order {
         this.orderRows = orderRows;
     }
 
-    static createNew(customer: Customer, deliveryAddress: string, deliveryCity: string, deliveryPostalCode: string): Order {
-        return new Order(undefined, undefined, undefined, undefined, customer, deliveryAddress, deliveryCity, deliveryPostalCode, []);
+    static createNew(customer: Customer): Order {
+        return new Order(undefined, undefined, undefined, undefined, customer, customer.deliveryAddress!, customer.deliveryCity!, customer.deliveryPostalCode!, []);
     }
 }

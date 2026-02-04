@@ -53,7 +53,7 @@ export class AddOrder {
     this.order = this.orderService.getOrder();
     var customer = this.customerService.getCustomer()!;
     if(!this.order){
-      this.order = Order.createNew(customer, 'Address 67', 'Townville', '12345');
+      this.order = Order.createNew(customer);
     }
     var foundRow = this.order.orderRows.find(aRow => aRow.item.id === newRow.item.id);
     if(foundRow){

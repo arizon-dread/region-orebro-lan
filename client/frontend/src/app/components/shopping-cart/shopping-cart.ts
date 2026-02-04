@@ -34,7 +34,7 @@ export class ShoppingCart {
         next: (data: Order) => {
           if (data) {
             this.orderService.clearOrder();
-            this.order = data;
+            this.order = undefined;
             this.snackbar.open('Beställningen lagd!', 'OK', { duration: 3000 });
           }
         },
