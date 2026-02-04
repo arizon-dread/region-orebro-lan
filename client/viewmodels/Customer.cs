@@ -12,5 +12,11 @@ namespace viewmodels
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public string Name { get; set; }
+        public string? DeliveryAddress { get; set; }
+        public string? DeliveryCity { get; set; }
+        public string? DeliveryPostalCode { get; set; }
+        public bool Active { get; set; }
+        public List<Order>? Orders { get; set; } = new List<Order>();
+
     }
 }

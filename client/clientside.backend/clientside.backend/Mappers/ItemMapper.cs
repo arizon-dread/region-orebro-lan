@@ -41,6 +41,8 @@
             dbItem.Manufacturer = vmItem.Manufacturer;
             dbItem.Name = vmItem.Name;
             dbItem.Price = vmItem.Price;
+            dbItem.UpdatedDate = vmItem.UpdatedDate;
+            dbItem.CreatedDate = vmItem.CreatedDate;
         }
 
         public static void MapTo(this RolDbContext.Models.Item dbItem, viewmodels.Item vmItem)
@@ -51,6 +53,8 @@
             vmItem.Manufacturer = dbItem.Manufacturer;
             vmItem.Name = dbItem.Name;
             vmItem.Price = dbItem.Price;
+            vmItem.UpdatedDate = dbItem.UpdatedDate;
+            vmItem.CreatedDate = dbItem.CreatedDate;
         }
     }
 }

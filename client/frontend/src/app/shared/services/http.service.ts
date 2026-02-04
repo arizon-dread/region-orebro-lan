@@ -10,7 +10,7 @@ import { Order } from '../models/order';
 })
 export class HttpService {
   
-  private apiPath: string = "http://localhost:5111";
+  private apiPath: string = "https://localhost:7089";
   private http = inject(HttpClient);
 
   get(){
