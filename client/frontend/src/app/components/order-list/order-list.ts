@@ -18,7 +18,7 @@ export class OrderList {
   }
 
   ngOnInit(){
-    this.http.getOrders().subscribe((data) => {
+    this.http.getAllOrders().subscribe((data) => {
       this.snackbar.open(`Hämtade ${data.length} beställningar från servern`, 'OK', { duration: 3000 });
       console.log(JSON.stringify(data))
       this.orders.set(data);

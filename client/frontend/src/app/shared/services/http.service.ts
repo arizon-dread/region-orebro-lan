@@ -17,7 +17,7 @@ export class HttpService {
     return this.http.get<Item[]>(this.apiPath + '/item/all');
   }
 
-  getOrders(): Observable<Order[]> {
+  getAllOrders(): Observable<Order[]> {
     return this.http.get<Order[]>(this.apiPath + '/order/all');
   }
 
