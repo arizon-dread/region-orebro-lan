@@ -13,7 +13,9 @@ export class OrderList {
 
   }
 
-  testGet(){
-    this.http.get();
+  ngOnInit(){
+    this.http.getOrders().subscribe((data) => {
+      console.log(data);
+    });
   }
 }

@@ -5,10 +5,10 @@
         </div>
         <div class="card-body">
             @if(this.order){
-            @for(orderRow of this.order.orderRows; track orderRow.id){
+            @for(orderRow of this.order.orderRows; track orderRow.item.id){
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div>
-                    <h5>{{orderRow.id}}</h5>
+                    <h5>{{orderRow.item.name}}</h5>
                     <p class="mb-0">Antal: {{orderRow.ammount}}</p>
                 </div>
                 <div>

@@ -11,7 +11,6 @@ export class OrderRow {
         this.id = id;
         this.version = version ?? 0;
         this.status = status;
-        var now =  new Date();
         this.item = item;
         this.ammount = ammount;
     }

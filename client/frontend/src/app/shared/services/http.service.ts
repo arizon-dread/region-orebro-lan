@@ -10,31 +10,25 @@ import { Order } from '../models/order';
 })
 export class HttpService {
   
-  private apiPath: string = "https://localhost:7089";
+  private apiPath: string = "https://localhost:7089/api/v1";
   private http = inject(HttpClient);
 
-  get(){
-    this.http.get<string>(this.apiPath + '/ready').subscribe((res) => {
-       console.log('Response: ', res);
-    });
-  }
-
   getItems(): Observable<Item[]> {
-    return this.http.get<Item[]>(this.apiPath + '/api/v1/item/all');
+    return this.http.get<Item[]>(this.apiPath + '/item/all');
   }
 
   getOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(this.apiPath + '/api/v1/orders');
+    return this.http.get<Order[]>(this.apiPath + '/order/all');
   }
 
   postOrder(order: Order): Observable<Order> {
-    return this.http.post<Order>(this.apiPath + 'api/v1/orders', order);
+    return this.http.post<Order>(this.apiPath + '/order', order);
   }
   
   getInformationList() : Observable<Info[]> {
-    return this.http.get<Info[]>(this.apiPath + '/api/v1/info');
+    return this.http.get<Info[]>(this.apiPath + '/info');
   }
   saveInformation(info: Info) {
-    return this.http.post<Info>(this.apiPath + '/api/v1/info', info);
+    return this.http.post<Info>(this.apiPath + '/info', info);
   }
 }

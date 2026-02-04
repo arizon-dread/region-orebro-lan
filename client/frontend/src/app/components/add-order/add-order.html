@@ -4,18 +4,26 @@
     </div>
     <div class="card-body">
         @if(this.items()){
-            @for(item of this.items(); track item.id){
-            <div class="mb-3">
-                <h5>{{item.name}}</h5>
-                <p>{{item.manufacturer}}</p>
-                <p>Pris: {{item.price}} kr</p>
-            </div>
-            <div>
-                <label for="quantity-{{item.id}}" class="form-label">Antal:</label>
-                <input type="number" id="quantity-{{item.id}}" class="form-control" min="0">
-                <button class="btn btn-primary mt-2" (click)="addToOrder(item, 1)">Lägg till i varukorg</button>
-            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th scope="col">Namn</th>
+                    <th scope="col">Tillverkare</th>
+                    <th scope="col">Pris</th>
+                    <th scope="col">Antal</th>
+                    <th scope="col"><p class="d-none">Lägg till</p></th>
+                    </tr>
+                </thead>
+            @for(item of this.items(); track item.id;){
+            <tr class="mb-3">
+                <th>{{item.name}}</th>
+                <td>{{item.manufacturer}}</td>
+                <td>{{item.price}} kr</td>
+                <td><input type="number" id="quantity-{{item.id}}" min="1" class="form-control" placeholder="Antal" (input)="updateAmount(item.id, $event.target.valueAsNumber)"></td>
+                <td><button class="btn btn-sm btn-success" (click)="addToOrder(item)">Lägg till i varukorg</button></td>
+            </tr>
             }
+            </table>
         }
         @else{
             <p>Inga varor tillgängliga.</p>
