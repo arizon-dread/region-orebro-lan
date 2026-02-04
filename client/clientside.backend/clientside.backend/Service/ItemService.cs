@@ -18,7 +18,13 @@ namespace clientside.backend.Service
         {
             _context = context;
         }
-
+        public IEnumerable<viewmodels.Item> UpdatedSince(DateTime updateDate)
+        {
+            foreach (var item in _context.Item.Where(d => d.UpdatedDate > updateDate))
+            {
+                yield return item.Map()!;
+            }
+        }
         public ServiceResponse<viewmodels.Item> Delete(Guid id)
         {
             try

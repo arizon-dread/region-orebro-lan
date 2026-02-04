@@ -1,9 +1,18 @@
 <section>
     <h2>Organisationsinformation</h2>
+    <!-- //isServer -->
+    @if (true) {
+    <div class="row mb-2">
+        <div class="col-xs-6 col-lg-3">
+            <button class="btn btn-primary" (click)="popupModal()">Publicera ny information</button>
+        </div>
+        <!--<app-add-information class="col-lg-6 col-xs-12"></app-add-information>-->
+    </div>
+    }
     <div class="row">
         @for(infoItem of informationList() ; track infoItem.id) {
         <div class="col-md-6 col-xs-12">
-           <app-information-item [infoItem]="infoItem"></app-information-item> 
+            <app-information-item [infoItem]="infoItem" (editItem)="edit($event)" (unpublishItem)="unpublish($event)"></app-information-item>
         </div>
         }
     </div>

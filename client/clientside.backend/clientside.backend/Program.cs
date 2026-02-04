@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using clientside.backend.DIHelper;
 using clientside.backend.Service;
 
@@ -19,7 +20,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: "cors",
                       policy =>
                       {
-                          policy.WithOrigins(["http://localhost:4200", "https://localhost:7089"]).WithMethods([HttpMethods.Get, HttpMethods.Post]);
+                          policy.WithOrigins(["http://localhost:4200", "https://localhost:7089", "http://localhost:5111"]).WithMethods([HttpMethods.Get, HttpMethods.Post])
+                              .WithHeaders("Content-Type");
                       });
 });
 builder.Services.AddControllers();

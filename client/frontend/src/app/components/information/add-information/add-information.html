@@ -1,0 +1,32 @@
+<form [formGroup]="form" (submit)="submit()" class="card">
+        <h3 mat-dialog-title>Publicera ny information</h3>
+    <div mat-dialog-content class="pt-2">
+
+        <div class="row mb-2">
+            <div class="col-2 mt-2">
+                <label for="title">Titel</label>
+            </div>
+            <div class="col-10">
+                <input type="text" id="title" formControlName="title" class="form-control" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <label for="text">Text</label>
+            </div>
+            <div class="col-10 pb-2">
+                <textarea id="text" rows="4" cols="80" formControlName="text" class="form-control"></textarea>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <div class="row">
+            <div class="col-6">
+                <button role="button" class="btn btn-danger" [mat-dialog-close]="submit()">Avbryt</button>
+            </div>
+            <div class="col-6">
+                <input type="submit" class="btn btn-success" value="Spara" [mat-dialog-close]="submit()" />
+            </div>
+        </div>
+    </div>
+</form>

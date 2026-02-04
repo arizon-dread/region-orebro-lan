@@ -9,7 +9,8 @@ import { Order } from '../models/order';
   providedIn: 'root',
 })
 export class HttpService {
-  private apiPath: string = "http://localhost:5111";
+  
+  private apiPath: string = "https://localhost:7089";
   private http = inject(HttpClient);
 
   get(){
@@ -19,7 +20,7 @@ export class HttpService {
   }
 
   getItems(): Observable<Item[]> {
-    return this.http.get<Item[]>(this.apiPath + '/api/v1/items');
+    return this.http.get<Item[]>(this.apiPath + '/api/v1/item/all');
   }
 
   getOrders(): Observable<Order[]> {
@@ -32,5 +33,8 @@ export class HttpService {
   
   getInformationList() : Observable<Info[]> {
     return this.http.get<Info[]>(this.apiPath + '/api/v1/info');
+  }
+  saveInformation(info: Info) {
+    return this.http.post<Info>(this.apiPath + '/api/v1/info', info);
   }
 }

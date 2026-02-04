@@ -9,6 +9,7 @@ namespace viewmodels
         public DateTime RequestDate {  get; set; }
         public List<Info> Info { get; set;  }
         public List<Order> Order { get; set; }
+        public List<Item> Item { get; set; }
 
     }
 }
