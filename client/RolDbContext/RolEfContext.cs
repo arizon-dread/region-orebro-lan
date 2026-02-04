@@ -21,11 +21,12 @@ namespace RolDbContext
                          Id = guid,
                          CreatedDate = DateTime.UtcNow,
                          Manufacturer = "Berras AB",
-                         Name = "CD-rom skiva",
-                         Price = 6.99,
+                         Name = "Engångshandskar 100p",
+                         Price = 89,
                          Status = "SavedLocal",
                          UpdatedDate = DateTime.UtcNow,
-                         Version = 1
+                         Version = 1,
+                         Active = true
                      }
                     );
                 context.SaveChanges();
@@ -40,11 +41,12 @@ namespace RolDbContext
                          Id = guid,
                          CreatedDate = DateTime.UtcNow,
                          Manufacturer = "Berras AB",
-                         Name = "DVD-spelare",
-                         Price = 1399,
+                         Name = "Munskydd",
+                         Price = 14.99
                          Status = "SavedLocal",
                          UpdatedDate = DateTime.UtcNow,
-                         Version = 1
+                         Version = 1,
+                         Active = true
                      }
                     );
                 context.SaveChanges();
@@ -59,7 +61,7 @@ namespace RolDbContext
                          Id = guid,
                          CreatedDate = DateTime.UtcNow,
                          Name = "Buan Jörk",
-                         Status = "SavedLocal",
+                         Status = "SavedRemote",
                          UpdatedDate = DateTime.UtcNow,
                          Version = 1,
                           DeliveryAddress = "Gatan 1",

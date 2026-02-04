@@ -11,13 +11,10 @@ using viewmodels;
 namespace clientside.backend.Service
 {
     [Lifetime(Lifetime.Scoped)]
-    public class OrderService
+    public class OrderService(RolEfContext context, SettingsService settingsService)
     {
-        public RolEfContext _context;
-        public OrderService(RolEfContext context)
-        {
-            _context = context;
-        }
+        private readonly RolEfContext _context = context;
+        private readonly bool isServer = settingsService.IsServer;
 
         public ServiceResponse<viewmodels.Order> Delete(Guid id)
         {
@@ -52,7 +49,8 @@ namespace clientside.backend.Service
                 //Hade det funnits mer tid hade jag löst det annorlunda
                 var orderItem = order.Map();
                 //Hämta kund
-                var customer = _context.Customer.FirstOrDefault(x => x.Id.ToString() == order.CustomerId.ToString()).Map();
+                var customer = _context.Customer.FirstOrDefault(x => x.Id == order.CustomerId).Map();
+                //var customer = _context.Customer.FirstOrDefault(x => x.Id.ToString().ToLower() == order.CustomerId.ToString().ToLower()).Map();
                 if (customer == null)
                 {
                     return new ServiceResponse<viewmodels.Order>("Kunde inte hitta kunden med id: " + order.CustomerId, ServiceResponseEnum.NotFound, null);
@@ -62,15 +60,17 @@ namespace clientside.backend.Service
                 var orderRows = _context.OrderRow.Where(x => x.OrderId == order.Id);
                 foreach (var row in orderRows)
                 {
+                    var item = _context.Item.FirstOrDefault(x => x.Id.ToString().ToLower() == row.ItemId.ToString().ToLower()).Map();
+                    if (item == null)
+                    {
+                        return new ServiceResponse<viewmodels.Order>("Kunde inte hitta artikeln med id: " + row.ItemId, ServiceResponseEnum.NotFound, null);
+                    }
+
                     var orderRow = row.Map();
                     if (orderRow == null) { 
                         return new ServiceResponse<viewmodels.Order>("Kunde inte hitta orderraden med id: " + row.Id, ServiceResponseEnum.NotFound, null);
                     }
-                    var item = _context.Item.FirstOrDefault(x => x.Id.ToString().ToLower() == row.ItemId.ToString().ToLower()).Map();
-                    if (item == null)
-                    {
-                        return new ServiceResponse<viewmodels.Order>("Kunde inte hitta artikeln med id: " + item.Id, ServiceResponseEnum.NotFound, null);
-                    }
+                    row.ItemId = item.Id!.Value;
                     orderRow.Item = item!;
                     orderItem.OrderRows.Add(orderRow);
             }
@@ -85,26 +85,26 @@ namespace clientside.backend.Service
         }
         private ServiceResponse<viewmodels.Order> Insert(viewmodels.Order order)
         {
-            var customers = _context.Customer.ToList();
-
             var customer = _context.Customer.FirstOrDefault(x => x.Id.ToString().ToLower() == order.Customer.Id.ToString().ToLower());
             if (customer == null)
             {
                 //Kundens finns inte, är inte berättigad att beställa
                 return new ServiceResponse<viewmodels.Order>("Kunden finnns inte. Id: " + order.Customer.Id, Enums.ServiceResponseEnum.Error, null);
             }
+            order.Customer = customer.Map();
 
-            var orderItem = new RolDbContext.Models.Order
+            var orderItem = order.Map()!;
+            order.Version = orderItem.Version;
+            order.Status = orderItem.Status;
+            if (isServer)
             {
-                Id = order.Id ?? Guid.NewGuid(),
-                CreatedDate = DateTime.UtcNow,
-                Version = order.Version < 1 ? 1 : order.Version,
-                CustomerId = order.Customer.Id!.Value,
-                DeliveryAddress = order.DeliveryAddress,
-                DeliveryCity = order.DeliveryCity,
-                DeliveryPostalCode = order.DeliveryPostalCode,
-                UpdatedDate = DateTime.UtcNow
-            };
+                order.Status = Status.SavedRemote;
+                order.Version = order.Version + 1;
+            }
+            orderItem.Status = order.Status;
+            orderItem.Version = order.Version;
+            orderItem.CreatedDate = DateTime.UtcNow;
+            orderItem.UpdatedDate = DateTime.UtcNow;
             _context.Order.Add(orderItem);
             order.Id = orderItem.Id;
 
@@ -115,7 +115,10 @@ namespace clientside.backend.Service
                     //Artikeln finns inte 
                     return new ServiceResponse<viewmodels.Order>("Kunde inte hitta artikeln. Id: " + row.Item.Id, Enums.ServiceResponseEnum.Error, null);
                 }
-
+                row.Item = item.Map()!;
+                row.Status = Status.SavedLocal;
+                row.Version = row.Version < 1 ? 1 : row.Version;
+                //row.Item.Status = Status.SavedLocal;
                 var rowItem = new RolDbContext.Models.OrderRow
                 {
                     Id = row.Id ?? Guid.NewGuid(),
@@ -124,8 +127,17 @@ namespace clientside.backend.Service
                     Version = row.Version < 1 ? 1 : row.Version,
                     ItemId = row.Item.Id!.Value,
                     OrderId = orderItem.Id,
-                    UpdatedDate = DateTime.UtcNow
+                    UpdatedDate = DateTime.UtcNow,
+                    Status = row.Status ?? Status.SavedLocal
                 };
+                if (isServer)
+                {
+                    order.Status = Status.SavedRemote;
+                    order.Version = order.Version + 1;
+                    row.Status = Status.SavedRemote;
+                }
+                //row.Item.Status = item.Status;
+                //row.Item.Version = item.Version;
                 _context.OrderRow.Add(rowItem);
                 row.Id = rowItem.Id;
             }
@@ -150,9 +162,18 @@ namespace clientside.backend.Service
                 return new ServiceResponse<viewmodels.Order>($"Konflikt mellan orderversion. Befintlig version: {orderItem.Version}, ny version: {order.Version} ", Enums.ServiceResponseEnum.Conflict, null);
             }
 
-            orderItem.DeliveryPostalCode = order.DeliveryPostalCode;
+
+            order.Version = orderItem.Version;
+            order.Status = orderItem.Status;
+            if (isServer)
+            {
+                order.Status = Status.SavedRemote;
+                order.Version = order.Version + 1;
+            }
+            orderItem.Status = order.Status;
             orderItem.Version = order.Version;
             orderItem.UpdatedDate = DateTime.UtcNow;
+            orderItem.DeliveryPostalCode = order.DeliveryPostalCode;
             orderItem.DeliveryAddress = order.DeliveryAddress;
             orderItem.DeliveryCity = order.DeliveryCity;
             orderItem.CustomerId = order.Customer.Id!.Value;
@@ -173,6 +194,11 @@ namespace clientside.backend.Service
                     OrderId = orderItem.Id,
                     UpdatedDate = DateTime.UtcNow
                 };
+                if (isServer)
+                {
+                    rowItem.Status = Status.SavedRemote;
+                }
+                row.Status = rowItem.Status;
                 _context.OrderRow.Add(rowItem);
                 row.Id = rowItem.Id;
             }
@@ -197,6 +223,13 @@ namespace clientside.backend.Service
             foreach (var item in _context.Order.Where(d => d.UpdatedDate > updateDate))
             {
                 yield return item.Map()!;
+            }
+        }
+        public IEnumerable<viewmodels.Order> GetSavedLocal()
+        {
+            foreach (var order in _context.Order.Where(d => d.Status == Status.SavedLocal))
+            {
+                yield return order.Map()!;
             }
         }
         public ServiceResponse<List<viewmodels.Order>> GetAll()
@@ -233,8 +266,11 @@ namespace clientside.backend.Service
                             CreatedDate = customer.CreatedDate,
                             UpdatedDate = customer.UpdatedDate,
                             Status = customer.Status,
-                            Version = customer.Version
-
+                            Version = customer.Version,
+                            Active = customer.Active,
+                            DeliveryAddress = customer.DeliveryAddress,
+                            DeliveryCity = customer.DeliveryCity,
+                            DeliveryPostalCode = customer.DeliveryPostalCode
                         };
                     }
                     orders.Add(viewOrder);

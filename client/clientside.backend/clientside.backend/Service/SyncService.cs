@@ -24,22 +24,17 @@ namespace clientside.backend.Service
             var sync1 = await SynchronizeFromServer();
             return [.. sync1, .. sync2];
         }
-        private async Task<List<string>> SynchronizeToServer()
+
+        private async Task<List<string>> SynchronizeInfosToServer(HttpClient client)
         {
             var infos = infoService.GetSavedLocal();
             var result = new List<string>
             {
                 "* SynchronizeToServer",
-                $"Number of localy saved: {infos.Count()}"
+                $"Number of infos localy saved: {infos.Count()}"
             };
             if (!infos.Any()) return result;
-            var serverAddress = settingsService.GetByKey("ServerAddress")?.Value;
-            if (!Uri.TryCreate(serverAddress, UriKind.Absolute, out var url))
-            {
-                result.Add($"Invalid serveraddress: {url}");
-                return result;
-            }
-            using var client = new HttpClient { BaseAddress = url };
+
             try
             {
                 foreach (var info in infos)
@@ -52,6 +47,56 @@ namespace clientside.backend.Service
             {
                 result.Add(ex.Message);
             }
+            return result;
+        }
+        private async Task<List<string>> SynchronizeOrdersToServer(HttpClient client)
+        {
+            var orders = orderService.GetSavedLocal();
+            var result = new List<string>
+            {
+                "* SynchronizeToServer",
+                $"Number of orders localy saved: {orders.Count()}"
+            };
+            if (!orders.Any()) return result;
+
+            try
+            {
+                foreach (var order in orders)
+                {
+                    var apa = await client.PostAsJsonAsync("api/v1/order", order);
+                    result.Add($"Save order remote {order.Id}. Http-Status {apa.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Add(ex.Message);
+            }
+            return result;
+        }
+        private async Task<List<string>> SynchronizeToServer()
+        {
+            var result = new List<string>();
+
+            //Kolla om korrekt serveraddress
+            var serverAddress = settingsService.GetByKey("ServerAddress")?.Value;
+            if (!Uri.TryCreate(serverAddress, UriKind.Absolute, out var url))
+            {
+                result.Add($"Invalid serveraddress: {url}");
+                return result;
+            }
+
+            //Skapa klient
+            using var client = new HttpClient { BaseAddress = url };
+
+            //TODO: Kolla om servern är nere
+
+            //Synka info
+            var infoResult = await SynchronizeInfosToServer(client);
+            result.AddRange(infoResult);
+
+            //Synka order
+            var ordersResult = await SynchronizeOrdersToServer(client);
+            result.AddRange(ordersResult);
 
             return result;
         }
