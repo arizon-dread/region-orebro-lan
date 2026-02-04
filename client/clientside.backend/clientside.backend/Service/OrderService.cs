@@ -49,7 +49,8 @@ namespace clientside.backend.Service
                 //Hade det funnits mer tid hade jag löst det annorlunda
                 var orderItem = order.Map();
                 //Hämta kund
-                var customer = _context.Customer.FirstOrDefault(x => x.Id.ToString() == order.CustomerId.ToString()).Map();
+                var customer = _context.Customer.FirstOrDefault(x => x.Id == order.CustomerId).Map();
+                //var customer = _context.Customer.FirstOrDefault(x => x.Id.ToString().ToLower() == order.CustomerId.ToString().ToLower()).Map();
                 if (customer == null)
                 {
                     return new ServiceResponse<viewmodels.Order>("Kunde inte hitta kunden med id: " + order.CustomerId, ServiceResponseEnum.NotFound, null);
@@ -59,15 +60,17 @@ namespace clientside.backend.Service
                 var orderRows = _context.OrderRow.Where(x => x.OrderId == order.Id);
                 foreach (var row in orderRows)
                 {
-                    var orderRow = row.Map();
-                    if (orderRow == null) { 
-                        return new ServiceResponse<viewmodels.Order>("Kunde inte hitta orderraden med id: " + row.Id, ServiceResponseEnum.NotFound, null);
-                    }
                     var item = _context.Item.FirstOrDefault(x => x.Id.ToString().ToLower() == row.ItemId.ToString().ToLower()).Map();
                     if (item == null)
                     {
                         return new ServiceResponse<viewmodels.Order>("Kunde inte hitta artikeln med id: " + item.Id, ServiceResponseEnum.NotFound, null);
                     }
+
+                    var orderRow = row.Map();
+                    if (orderRow == null) { 
+                        return new ServiceResponse<viewmodels.Order>("Kunde inte hitta orderraden med id: " + row.Id, ServiceResponseEnum.NotFound, null);
+                    }
+                    row.ItemId = item.Id!.Value;
                     orderRow.Item = item!;
                     orderItem.OrderRows.Add(orderRow);
             }
