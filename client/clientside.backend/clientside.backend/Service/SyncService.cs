@@ -64,7 +64,7 @@ namespace clientside.backend.Service
                 foreach (var order in orders)
                 {
                     var apa = await client.PostAsJsonAsync("api/v1/order", order);
-                    result.Add($"Save info remote {order.Id}. Http-Status {apa.StatusCode}");
+                    result.Add($"Save order remote {order.Id}. Http-Status {apa.StatusCode}");
                 }
             }
             catch (Exception ex)
@@ -77,8 +77,6 @@ namespace clientside.backend.Service
         {
             var result = new List<string>();
 
-            //TODO: Kolla om servern är nere
-
             //Kolla om korrekt serveraddress
             var serverAddress = settingsService.GetByKey("ServerAddress")?.Value;
             if (!Uri.TryCreate(serverAddress, UriKind.Absolute, out var url))
@@ -89,7 +87,9 @@ namespace clientside.backend.Service
 
             //Skapa klient
             using var client = new HttpClient { BaseAddress = url };
-            
+
+            //TODO: Kolla om servern är nere
+
             //Synka info
             var infoResult = await SynchronizeInfosToServer(client);
             result.AddRange(infoResult);
