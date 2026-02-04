@@ -42,7 +42,7 @@ namespace RolDbContext
                          CreatedDate = DateTime.UtcNow,
                          Manufacturer = "Berras AB",
                          Name = "Munskydd",
-                         Price = 14.99
+                         Price = 14.99,
                          Status = "SavedLocal",
                          UpdatedDate = DateTime.UtcNow,
                          Version = 1,
