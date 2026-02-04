@@ -225,12 +225,23 @@ namespace clientside.backend.Service
                 yield return item.Map()!;
             }
         }
-        public IEnumerable<viewmodels.Order> GetSavedLocal()
+        public ServiceResponse<List<viewmodels.Order>> GetSavedLocal()
         {
-            foreach (var order in _context.Order.Where(d => d.Status == Status.SavedLocal))
+            var orderItems = new List<viewmodels.Order>();
+            var orders = _context.Order.Where(d => d.Status == Status.SavedLocal).ToList();
+            foreach (var order in orders)
             {
-                yield return order.Map()!;
+                var customer = _context.Customer.FirstOrDefault(d=>d.Id ==  order.CustomerId);
+                if (customer == null)
+                {
+                    //No customer found
+                    return new ServiceResponse<List<viewmodels.Order>>("Kunde inte hitta kunden med id: " + order.CustomerId, ServiceResponseEnum.NotFound, null);
+                }
+                var mapped = order.Map();
+                mapped.Customer = customer.Map();
+                orderItems.Add(mapped);
             }
+            return new ServiceResponse<List<viewmodels.Order>>("", ServiceResponseEnum.Success, orderItems);
         }
         public ServiceResponse<List<viewmodels.Order>> GetAll()
         {
