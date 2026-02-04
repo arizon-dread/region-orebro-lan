@@ -64,7 +64,8 @@ namespace RolDbContext
                          Version = 1,
                           DeliveryAddress = "Gatan 1",
                            DeliveryCity = "Örebro",
-                            DeliveryPostalCode = "702 37"
+                            DeliveryPostalCode = "702 37",
+                             Active = true,
                      }
                     );
                 context.SaveChanges();

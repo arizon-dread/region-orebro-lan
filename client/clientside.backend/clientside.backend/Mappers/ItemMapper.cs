@@ -14,7 +14,8 @@
                 Version = item.Version,
                 Manufacturer = item.Manufacturer,
                 Name = item.Name,
-                Price = item.Price
+                Price = item.Price,
+                Active = item.Active
             };
             return response;
         }
@@ -30,7 +31,8 @@
                 Version = item.Version,
                 Manufacturer = item.Manufacturer,
                 Name = item.Name,
-                Price = item.Price
+                Price = item.Price,
+                Active = item.Active
             };
             return response;
         }
@@ -41,6 +43,10 @@
             dbItem.Manufacturer = vmItem.Manufacturer;
             dbItem.Name = vmItem.Name;
             dbItem.Price = vmItem.Price;
+            dbItem.UpdatedDate = vmItem.UpdatedDate;
+            dbItem.CreatedDate = vmItem.CreatedDate;
+            dbItem.Active = vmItem.Active;
+            dbItem.Id  = vmItem.Id.GetValueOrDefault(Guid.Empty);
         }
 
         public static void MapTo(this RolDbContext.Models.Item dbItem, viewmodels.Item vmItem)
@@ -51,6 +57,9 @@
             vmItem.Manufacturer = dbItem.Manufacturer;
             vmItem.Name = dbItem.Name;
             vmItem.Price = dbItem.Price;
+            vmItem.UpdatedDate = dbItem.UpdatedDate;
+            vmItem.CreatedDate = dbItem.CreatedDate;
+            vmItem.Active = dbItem.Active;
         }
     }
 }

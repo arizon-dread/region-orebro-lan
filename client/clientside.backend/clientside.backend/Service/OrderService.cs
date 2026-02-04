@@ -66,7 +66,7 @@ namespace clientside.backend.Service
                     if (orderRow == null) { 
                         return new ServiceResponse<viewmodels.Order>("Kunde inte hitta orderraden med id: " + row.Id, ServiceResponseEnum.NotFound, null);
                     }
-                    var item = _context.Item.FirstOrDefault(x => x.Id.ToString() == row.ItemId.ToString()).Map();
+                    var item = _context.Item.FirstOrDefault(x => x.Id.ToString().ToLower() == row.ItemId.ToString().ToLower()).Map();
                     if (item == null)
                     {
                         return new ServiceResponse<viewmodels.Order>("Kunde inte hitta artikeln med id: " + item.Id, ServiceResponseEnum.NotFound, null);
@@ -87,7 +87,7 @@ namespace clientside.backend.Service
         {
             var customers = _context.Customer.ToList();
 
-            var customer = _context.Customer.FirstOrDefault(x => x.Id.ToString() == order.Customer.Id.ToString());
+            var customer = _context.Customer.FirstOrDefault(x => x.Id.ToString().ToLower() == order.Customer.Id.ToString().ToLower());
             if (customer == null)
             {
                 //Kundens finns inte, är inte berättigad att beställa
@@ -110,7 +110,7 @@ namespace clientside.backend.Service
 
             foreach (var row in order.OrderRows)
             {
-                var item = _context.Item.FirstOrDefault(x => x.Id.ToString() == row.Item.Id.ToString());
+                var item = _context.Item.FirstOrDefault(x => x.Id.ToString().ToLower() == row.Item.Id.ToString().ToLower());
                 if (item == null) {
                     //Artikeln finns inte 
                     return new ServiceResponse<viewmodels.Order>("Kunde inte hitta artikeln. Id: " + row.Item.Id, Enums.ServiceResponseEnum.Error, null);
@@ -218,7 +218,7 @@ namespace clientside.backend.Service
                         Status = order.Status
                     };
 
-                    var customer = _context.Customer.FirstOrDefault(x => x.Id.ToString() == order.CustomerId.ToString());
+                    var customer = _context.Customer.FirstOrDefault(x => x.Id.ToString().ToLower() == order.CustomerId.ToString().ToLower());
                     if (customer == null)
                     {
                         //No customer found
